@@ -1,0 +1,35 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-byte-order-marker
+      - id: check-builtin-literals
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: debug-statements
+      - id: destroyed-symlinks
+      - id: detect-private-key
+      - id: mixed-line-ending
+      - id: name-tests-test
+
+  - repo: local
+    hooks:
+      - id: rye-fmt
+        name: rye fmt
+        description: "Run 'rye fmt' for Python formatting"
+        entry: rye fmt
+        language: python
+        types_or: [ python, pyi, jupyter ]
+        require_serial: true
+      - id: rye-check
+        name: rye check
+        description: "Run 'rye check' for Python linting"
+        entry: rye check
+        language: python
+        types_or: [ python, pyi, jupyter ]
+        require_serial: true
