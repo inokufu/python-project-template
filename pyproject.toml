@@ -1,0 +1,54 @@
+[project]
+name = "python-project-template"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+  { name = "Inokufu", email = "contact@inokufu.com" }
+]
+dependencies = []
+readme = "README.md"
+license-files = ["LICENSE"]
+requires-python = ">= 3.12"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+  "pytest>=8.3.4",
+  "pytest-cov>=6.0.0",
+  "pre-commit>=4.1.0",
+]
+
+[tool.ruff]
+output-format = "concise"
+target-version = "py312"
+line-length = 88
+indent-width = 4
+
+lint.pydocstyle.convention = "google"
+lint.flake8-bandit.check-typed-exception = true
+lint.flake8-type-checking.strict = true
+
+lint.select = ["ALL"]
+lint.ignore = [
+  "PLE1205", # logging-too-many-args
+  "D100", # pydocstyle
+  "ANN401",
+  "EM", # flake8-errmsg
+  "INP001", # implicit-namespace-package
+  "TRY003", # raise-vanilla-args
+  "TRY401", # verbose-log-message
+]
+lint.extend-unfixable = [
+  "TC002", # typing-only-third-party-import
+  "TRY400", # error-instead-of-exception
+  "SIM105", # suppressible-exception
+]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
+addopts = "--cov=src"
+
+[tool.coverage.report]
+exclude_lines = [
+  "@abstractmethod"
+]
