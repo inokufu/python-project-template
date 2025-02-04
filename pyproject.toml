@@ -7,7 +7,6 @@ authors = [
 ]
 dependencies = []
 readme = "README.md"
-license-files = ["LICENSE"]
 requires-python = ">= 3.12"
 
 [tool.rye]
@@ -32,7 +31,6 @@ lint.select = ["ALL"]
 lint.ignore = [
   "PLE1205", # logging-too-many-args
   "D100", # pydocstyle
-  "ANN401",
   "EM", # flake8-errmsg
   "INP001", # implicit-namespace-package
   "TRY003", # raise-vanilla-args
