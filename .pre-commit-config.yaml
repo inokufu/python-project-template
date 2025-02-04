@@ -17,6 +17,26 @@ repos:
       - id: mixed-line-ending
       - id: name-tests-test
 
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.19.1
+    hooks:
+      - id: pyupgrade
+        args: [ --py312-plus ]
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell  # See pyproject.toml for args
+        additional_dependencies:
+          - tomli
+
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+    rev: v1.3.3
+    hooks:
+      - id: python-safety-dependencies-check
+        args: [ --disable-optional-telemetry ]
+        files: requirements.lock
+
   - repo: local
     hooks:
       - id: rye-fmt
@@ -26,10 +46,11 @@ repos:
         language: python
         types_or: [ python, pyi, jupyter ]
         require_serial: true
-      - id: rye-check
-        name: rye check
-        description: "Run 'rye check' for Python linting"
-        entry: rye check
+
+      - id: rye-lint
+        name: rye lint
+        description: "Run 'rye lint' for Python linting"
+        entry: rye lint
         language: python
         types_or: [ python, pyi, jupyter ]
         require_serial: true
