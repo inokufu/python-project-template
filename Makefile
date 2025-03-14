@@ -38,3 +38,15 @@ check: ## Run all checks (precommit + test)
 .PHONY: build
 build: ## Build package
 	rye build
+
+.PHONY: docs
+docs: ## Build documentation
+	rye run mkdocs build
+
+.PHONY: docs-serve
+docs-serve: ## Serve documentation locally
+	rye run mkdocs serve
+
+.PHONY: docs-deploy
+docs-deploy: ## Deploy documentation to GitHub Pages
+	rye run mkdocs gh-deploy

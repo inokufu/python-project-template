@@ -88,16 +88,19 @@ This project includes a Makefile with useful commands for development:
 make help
 ```
 
-| Command   | Description                             |
-|-----------|-----------------------------------------|
-| install   | Synchronize dependencies                |
-| init      | Initialize project (first installation) |
-| format    | Format code                             |
-| lint      | Run linting checks                      |
-| test      | Run tests with coverage                 |
-| precommit | Run pre-commit on all files             |
-| check     | Run all checks (precommit + test)       |
-| build     | Build package                           |
+| Command     | Description                             |
+|-------------|-----------------------------------------|
+| install     | Synchronize dependencies                |
+| init        | Initialize project (first installation) |
+| format      | Format code                             |
+| lint        | Run linting checks                      |
+| test        | Run tests with coverage                 |
+| precommit   | Run pre-commit on all files             |
+| check       | Run all checks (precommit + test)       |
+| build       | Build package                           | 
+| docs        | Build documentation                     |
+| docs-serve  | Serve documentation locally             |
+| docs-deploy | Deploy documentation to GitHub Pages    |
 
 ## Style Guidelines
 
