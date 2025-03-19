@@ -59,3 +59,7 @@ docs-serve: check-rye ## Serve documentation locally
 .PHONY: docs-deploy
 docs-deploy: check-rye ## Deploy documentation to GitHub Pages
 	rye run mkdocs gh-deploy
+
+.PHONY: gitignore
+gitignore: ## Generate .gitignore file for this project
+	curl -L https://www.gitignore.io/api/windows,macos,linux,git,pycharm,visualstudiocode,python > .gitignore
