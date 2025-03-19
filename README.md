@@ -31,3 +31,22 @@
 |----------|-------------|----------|---------------|-----------------|
 
 ### Architecture
+
+## Contributing
+
+We welcome contributions to this project! Please see
+the [CONTRIBUTING.md](docs/CONTRIBUTING.md) file for guidelines on how to
+contribute, including:
+
+- How to set up your development environment
+- Coding standards and style guidelines
+- Pull request process
+- Testing requirements
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 (GPL-3.0) -
+see the [LICENSE](LICENSE) file for details.
+
+GPL-3.0 is a strong copyleft license that requires anyone who distributes your
+code or a derivative work to make the source available under the same terms.

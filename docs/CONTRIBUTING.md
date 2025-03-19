@@ -16,6 +16,31 @@ the [Code of Conduct](CODE_OF_CONDUCT.md).
 - Use the issue templates when reporting bugs or requesting features
 - Provide as much detail as possible to help reproduce and resolve issues
 
+## Development Setup
+
+### Prerequisites
+
+- Python 3.12 or higher
+- [Rye](https://rye.astral.sh) for dependency management
+- Git for version control
+
+### Editor Configuration
+
+This project uses EditorConfig to maintain consistent coding styles.
+Find plugin for your editor at [editorconfig.org](https://editorconfig.org/#download)
+
+### Pre-commit Hooks
+This project uses pre-commit to enforce code quality checks before each commit.
+
+### Pre-commit hooks installed
+- Code formatting with Ruff
+- Python syntax checking
+- Security vulnerability scanning
+- Trailing whitespace removal
+- Merge conflict detection
+- Large file detection
+- And more (see .pre-commit-config.yaml)
+
 ### Development Workflow
 
 1. **Fork and clone the repository**
@@ -113,6 +138,9 @@ This project follows these conventions:
 - Tests written with pytest
 
 ## Documentation
+
+This project uses [MkDocs](https://www.mkdocs.org/) for documentation.
+The documentation source files are in the `docs/` directory in Markdown format.
 
 When adding or changing features, please update the documentation accordingly:
 
