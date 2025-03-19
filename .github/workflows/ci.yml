@@ -2,12 +2,13 @@ name: CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, develop]
   pull_request:
-    branches: [main, master]
+    branches: [main, master, develop]
   workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * 0"  # Weekly on Sundays
+# Uncomment to activate regular checks:
+#  schedule:
+#    - cron: "0 0 * * 0"  # Weekly on Sundays
 
 jobs:
   lint:
@@ -73,19 +74,14 @@ jobs:
       - name: Run tests with coverage
         run: make test
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          file: ./coverage.xml
-          fail_ci_if_error: false
-          token: ${{ secrets.CODECOV_TOKEN }}
-
       - name: Upload coverage report as artifact
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report-${{ matrix.python-version }}
-          path: htmlcov/
-          retention-days: 7
+          path: |
+            htmlcov/
+            coverage.xml
+        retention-days: 7
 
   greeting:
     name: Greet first-time contributors
