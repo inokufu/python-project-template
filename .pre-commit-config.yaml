@@ -5,15 +5,18 @@ repos:
     rev: v5.0.0
     hooks:
       - id: check-added-large-files
-      - id: fix-byte-order-marker
       - id: check-builtin-literals
       - id: check-case-conflict
       - id: check-docstring-first
+      - id: check-json
       - id: check-merge-conflict
       - id: check-symlinks
+      - id: check-toml
+      - id: check-yaml
       - id: debug-statements
       - id: destroyed-symlinks
       - id: detect-private-key
+      - id: fix-byte-order-marker
       - id: mixed-line-ending
       - id: name-tests-test
 
@@ -36,6 +39,11 @@ repos:
       - id: python-safety-dependencies-check
         args: [ --disable-optional-telemetry ]
         files: requirements.lock
+
+  - repo: https://github.com/mrtazz/checkmake.git
+    rev: 0.2.2
+    hooks:
+      - id: checkmake
 
   - repo: local
     hooks:
