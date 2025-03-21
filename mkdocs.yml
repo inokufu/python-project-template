@@ -10,3 +10,5 @@ plugins:
             docstring_style: google
             members_order: source
             show_source: false
+            extensions:
+              - griffe_inherited_docstrings

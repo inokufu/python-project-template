@@ -17,7 +17,7 @@ ifndef RYE_COMMAND
 endif
 
 .PHONY: install
-install: check-rye pyproject.toml requirements.lock ## Synchronize dependencies
+install: check-rye pyproject.toml ## Synchronize dependencies
 	rye sync
 
 .PHONY: init
@@ -35,7 +35,7 @@ lint: check-rye ## Run linting checks
 	rye lint
 
 .PHONY: test
-test: check-rye ## Run tests with coverage
+test: check-rye tests ## Run tests with coverage
 	rye test
 
 .PHONY: diff-cover
@@ -43,28 +43,28 @@ diff-cover: check-rye test coverage.xml ## Show code coverage for recent changes
 	rye run diff-cover coverage.xml
 
 .PHONY: precommit
-precommit: check-rye ## Run pre-commit on all files
+precommit: check-rye install ## Run pre-commit on all files
 	rye run pre-commit run --all-files
 
 .PHONY: check
-check: ## Run all checks (precommit + test)
+check: check-rye install ## Run all checks (precommit + test)
 	make precommit
 	make test
 
 .PHONY: build
-build: check-rye ## Build package
+build: check-rye install ## Build package
 	rye build
 
 .PHONY: docs
-docs: check-rye ## Build documentation
+docs: check-rye install ## Build documentation
 	rye run mkdocs build
 
 .PHONY: docs-serve
-docs-serve: check-rye ## Serve documentation locally
+docs-serve: check-rye install ## Serve documentation locally
 	rye run mkdocs serve
 
 .PHONY: docs-deploy
-docs-deploy: check-rye ## Deploy documentation to GitHub Pages
+docs-deploy: check-rye install ## Deploy documentation to GitHub Pages
 	rye run mkdocs gh-deploy
 
 .PHONY: gitignore

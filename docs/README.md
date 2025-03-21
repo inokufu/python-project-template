@@ -1,7 +1,7 @@
 # Python Project Template
 
 [![Python](https://img.shields.io/badge/Python-FFD43B?logo=python)](https://www.python.org/)
-[![License](https://img.shields.io/badge/GPL--3.0-red?logo=gnu)](LICENSE)
+![License](https://img.shields.io/badge/GPL--3.0-red?logo=gnu)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-E6F0FF?logo=githubactions)](https://github.com/features/actions)
 [![Pytest](https://img.shields.io/badge/pytest-E6F7FF?logo=pytest)](https://docs.pytest.org/)
 [![EditorConfig](https://img.shields.io/badge/EditorConfig-333333?logo=editorconfig)](https://editorconfig.org/)
@@ -35,7 +35,7 @@
 ## Contributing
 
 We welcome contributions to this project! Please see
-the [CONTRIBUTING.md](docs/CONTRIBUTING.md) file for guidelines on how to
+the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines on how to
 contribute, including:
 
 - How to set up your development environment
@@ -46,7 +46,7 @@ contribute, including:
 ## License
 
 This project is licensed under the GNU General Public License v3.0 (GPL-3.0) -
-see the [LICENSE](LICENSE) file for details.
+see the LICENSE file for details.
 
 GPL-3.0 is a strong copyleft license that requires anyone who distributes your
 code or a derivative work to make the source available under the same terms.
