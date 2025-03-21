@@ -38,13 +38,17 @@ lint: check-rye ## Run linting checks
 test: check-rye ## Run tests with coverage
 	rye test
 
+.PHONY: diff-cover
+diff-cover: check-rye test coverage.xml ## Show code coverage for recent changes
+	rye run diff-cover coverage.xml
+
 .PHONY: precommit
 precommit: check-rye ## Run pre-commit on all files
 	rye run pre-commit run --all-files
 
 .PHONY: check
 check: ## Run all checks (precommit + test)
-	-make precommit
+	make precommit
 	make test
 
 .PHONY: build

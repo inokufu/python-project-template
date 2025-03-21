@@ -16,9 +16,11 @@ requires-python = ">= 3.12"
 [tool.rye]
 managed = true
 dev-dependencies = [
-    "pytest~=8.3.5",
-    "pytest-cov~=6.0.0",
+    "diff-cover~=9.2.4",
     "pre-commit~=4.2.0",
+    "pytest-cov~=6.0.0",
+    "pytest-mock~=3.14.0",
+    "pytest~=8.3.5",
 ]
 
 [tool.rye.scripts]
@@ -50,7 +52,7 @@ lint.extend-unfixable = [
 
 [tool.pytest.ini_options]
 pythonpath = [".", "src"]
-addopts = "--cov=src"
+addopts = "--cov=src --cov-report=term --cov-report=xml"
 
 [tool.coverage.report]
 exclude_lines = [
