@@ -51,6 +51,15 @@ lint.extend-unfixable = [
   "SIM105", # suppressible-exception
 ]
 
+[tool.ruff.lint.extend-per-file-ignores]
+"tests/*" = [
+    "S101", # Asserts allowed in tests...
+    "ARG", # Unused function args -> fixtures nevertheless are functionally relevant...
+    "FBT", # Don't care about booleans as positional arguments in tests, e.g. via @pytest.mark.parametrize()
+    "PLR2004", # Magic value used in comparison, ...
+    "S311", # Standard pseudo-random generators are not suitable for cryptographic purposes
+]
+
 [tool.pytest.ini_options]
 pythonpath = [".", "src"]
 addopts = "--cov=src --cov-report=term --cov-report=xml"
