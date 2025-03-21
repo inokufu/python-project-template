@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+  workflow_dispatch:
+# Uncomment to activate regular checks:
+#  schedule:
+#    - cron: "0 0 * * 0"  # Weekly on Sundays
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Rye
+        id: setup-rye
+        uses: eifinger/setup-rye@v4
+        with:
+          enable-cache: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install dependencies
+        if: steps.setup-rye.outputs.cache-hit != 'true'
+        run: make install
+
+      - name: Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+
+      - name: Run pre-commit checks
+        run: make precommit
+
+      - name: Lint
+        run: make lint
+
+      - name: Lint GitHub Actions
+        uses: eifinger/actionlint-action@v1
+
+  test:
+    name: Test Python
+    needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]  # Add additional versions as needed
+      fail-fast: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Rye
+        id: setup-rye
+        uses: eifinger/setup-rye@v4
+        with:
+          enable-cache: true
+          cache-prefix: ${{ matrix.python-version }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pin Python ${{ matrix.python-version }}
+        run: rye pin ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        if: steps.setup-rye.outputs.cache-hit != 'true'
+        run: make install
+
+      - name: Run tests with coverage
+        run: make test
+
+      - name: Upload coverage report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-${{ matrix.python-version }}
+          path: |
+            htmlcov/
+            coverage.xml
+        retention-days: 7
+
+  greeting:
+    name: Greet first-time contributors
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || github.event_name == 'issues'
+    steps:
+      - uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          pr-message: 'Hello @${{ github.actor }}, thank you for submitting a PR! We will review it soon.'
+          issue-message: |
+            Hello @${{ github.actor }}, thank you for your interest in our project!
+            If this is a bug report, please provide screenshots and steps to reproduce your issue.
