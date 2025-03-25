@@ -9,7 +9,7 @@ dependencies = [
     "mkdocs~=1.6.1",
     "mkdocstrings-python~=1.16.6",
     "mkdocs-material~=9.6.9",
-    "griffe-inherited-docstrings>=1.1.1",
+    "griffe-inherited-docstrings~=1.1.1",
 ]
 readme = "README.md"
 requires-python = ">= 3.12"
