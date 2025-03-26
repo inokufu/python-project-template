@@ -1,0 +1,35 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-toml
+      - id: check-yaml
+      - id: destroyed-symlinks
+      - id: detect-private-key
+      - id: fix-byte-order-marker
+      - id: mixed-line-ending
+      - id: name-tests-test
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+    rev: v1.3.3
+    hooks:
+      - id: python-safety-dependencies-check
+        args: [ --disable-optional-telemetry ]
+        files: requirements.lock
+
+  - repo: https://github.com/mrtazz/checkmake.git
+    rev: 0.2.2
+    hooks:
+      - id: checkmake

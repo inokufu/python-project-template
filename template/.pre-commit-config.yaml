@@ -1,5 +1,9 @@
+# Note: This document applies to the Python project template itself.
+# Projects generated from this template will have their own version of this document.
+
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
