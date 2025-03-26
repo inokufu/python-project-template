@@ -1,0 +1,18 @@
+[project]
+name = "python-project-template"
+version = "0.1.0"
+description = "A Copier template for modern Python projects"
+authors = [
+  { name = "Inokufu", email = "contact@inokufu.com" }
+]
+dependencies = []
+readme = "docs/README.md"
+requires-python = ">= 3.12"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "copier~=9.6.0",
+    "pre-commit~=4.2.0",
+    "pytest~=8.3.5",
+]
