@@ -1,3 +1,6 @@
+# Note: This file applies to the Python project template itself.
+# Projects generated from this template will have their own version of this file.
+
 [project]
 name = "python-project-template"
 version = "0.1.0"

@@ -3,7 +3,6 @@
 > Note: This document applies to the Python project template itself. 
 > Projects generated from this template will have their own version of this document.
 
-
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
