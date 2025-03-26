@@ -46,14 +46,19 @@ To create a new Python project from this template:
 
 ```bash
 # Generate a new project
-copier copy --trust gh:organization/python-template path/to/destination
+copier copy gh:inokufu/python-project-template path/to/destination
 
 # Navigate to the project
 cd path/to/destination
 
+# Init GIT (if you haven't already done)
+git init
+
 # Initialize the project
 make init
 ```
+
+That's it! Feel free to focus on the coding within `src` and `tests` folders !
 
 ### Update an existing project
 
@@ -63,7 +68,7 @@ the template is improved:
 ```bash
 # Update your project with the latest template version
 cd path/to/your/project
-copier update --exclude src/ --exclude tests/
+copier update
 ```
 
 This will update your project files while preserving your source code and tests.
