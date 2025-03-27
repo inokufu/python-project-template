@@ -7,9 +7,14 @@ _subdirectory: template
 project_name:
   type: str
   help: Project name
-  default: python_project
+  default: Python project
+
+package_name:
+  type: str
+  help: Package name
+  default: "{{ project_name|lower|replace('-', '_')|replace(' ', '_') }}"
   validator: >-
-    {% if not project_name.isidentifier() %}
+    {% if not package_name.isidentifier() %}
       The project name must be a valid Python identifier
     {% endif %}
 

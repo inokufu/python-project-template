@@ -1,9 +1,9 @@
 [project]
-name = "python-project"
+name = "{{ package_name }}"
 version = "0.1.0"
-description = "Add your description here"
+description = "{{ project_description }}"
 authors = [
-  { name = "Inokufu", email = "contact@inokufu.com" }
+  { name = "{{ author_name }}", email = "{{ author_email }}" }
 ]
 dependencies = [
     "mkdocs~=1.6.1",
@@ -12,7 +12,7 @@ dependencies = [
     "griffe-inherited-docstrings~=1.1.1",
 ]
 readme = "docs/README.md"
-requires-python = ">= 3.12"
+requires-python = ">= {{ min_python_version }}"
 
 [tool.rye]
 managed = true
@@ -28,7 +28,7 @@ dev-dependencies = [
 
 [tool.ruff]
 output-format = "concise"
-target-version = "py312"
+target-version = "py{{ min_python_version|replace('.', '') }}"
 line-length = 88
 indent-width = 4
 
