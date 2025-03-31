@@ -73,14 +73,16 @@ copier update
 
 This will update your project files while preserving your source code and tests.
 
-## 📋 Available Features
+## 📋 Template Variables
 
-| Feature              | Description                                    | Default |
-|----------------------|------------------------------------------------|---------|
-| `use_github_actions` | Configure GitHub Actions for CI/CD             | ✅       |
-| `use_mkdocs`         | Install and configure MkDocs for documentation | ✅       |
-| `min_python_version` | Minimum Python version required                | 3.12    |
-| `license`            | Project license                                | GPL-3.0 |
+| Feature               | Description                                                       | Default               |
+|-----------------------|-------------------------------------------------------------------|-----------------------|
+| `project_name`        | Name of your project (can include spaces and hyphens)             | "Python project"      |
+| `package_name`        | Python import name (must be a valid Python identifier)            | Based on project name |
+| `project_description` | Brief summary of your project (used in README and pyproject.toml) | "A Python project"    |
+| `author_name`         | Name of the author or organization (for credits and licensing)    |                       |
+| `author_email`        | Contact email (for documentation and package metadata)            |                       |
+| `min_python_version`  | Minimum Python version required                                   | 3.12                  |
 
 ## 🧑‍💻 Development
 
