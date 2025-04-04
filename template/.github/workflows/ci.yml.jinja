@@ -23,7 +23,7 @@ jobs:
         uses: eifinger/setup-rye@v4
         with:
           enable-cache: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
 
       - name: Install dependencies
         if: steps.setup-rye.outputs.cache-hit != 'true'
@@ -33,7 +33,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit
-          key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+          key: pre-commit-{% raw %}${{ hashFiles('.pre-commit-config.yaml') }}{% endraw %}
 
       - name: Run pre-commit checks
         run: make precommit
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.12"]  # Add additional versions as needed
+        python-version: ["{{ min_python_version }}"]  # Add additional versions as needed
       fail-fast: false
     steps:
       - name: Checkout repository
@@ -61,11 +61,11 @@ jobs:
         uses: eifinger/setup-rye@v4
         with:
           enable-cache: true
-          cache-prefix: ${{ matrix.python-version }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          cache-prefix: {% raw %}${{ matrix.python-version }}{% endraw %}
+          github-token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
 
-      - name: Pin Python ${{ matrix.python-version }}
-        run: rye pin ${{ matrix.python-version }}
+      - name: Pin Python {% raw %}${{ matrix.python-version }}{% endraw %}
+        run: rye pin {% raw %}${{ matrix.python-version }}{% endraw %}
 
       - name: Install dependencies
         if: steps.setup-rye.outputs.cache-hit != 'true'
@@ -77,7 +77,7 @@ jobs:
       - name: Upload coverage report as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-report-${{ matrix.python-version }}
+          name: coverage-report-{% raw %}${{ matrix.python-version }}{% endraw %}
           path: |
             htmlcov/
             coverage.xml
@@ -90,8 +90,8 @@ jobs:
     steps:
       - uses: actions/first-interaction@v1
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          pr-message: 'Hello @${{ github.actor }}, thank you for submitting a PR! We will review it soon.'
+          repo-token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+          pr-message: 'Hello {% raw %}@${{ github.actor }}{% endraw %}, thank you for submitting a PR! We will review it soon.'
           issue-message: |
-            Hello @${{ github.actor }}, thank you for your interest in our project!
+            Hello {% raw %}@${{ github.actor }}{% endraw %}, thank you for your interest in our project!
             If this is a bug report, please provide screenshots and steps to reproduce your issue.

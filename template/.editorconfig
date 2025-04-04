@@ -1,8 +1,5 @@
 # EditorConfig is awesome: https://EditorConfig.org
 
-# Note: This file applies to the Python project template itself.
-# Projects generated from this template will have their own version of this file.
-
 # Top-most EditorConfig file
 root = true
 

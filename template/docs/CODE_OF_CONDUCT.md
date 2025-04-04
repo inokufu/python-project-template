@@ -1,8 +1,5 @@
 # Contributor Covenant Code of Conduct
 
-> Note: This document applies to the Python project template itself. 
-> Projects generated from this template will have their own version of this document.
-
 ## Our Pledge
 
 We as members, contributors, and leaders pledge to make participation in our

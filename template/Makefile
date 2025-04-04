@@ -1,6 +1,3 @@
-# Note: This file applies to the Python project template itself.
-# Projects generated from this template will have their own version of this file.
-
 .DEFAULT_GOAL := help
 
 # Check if Rye is installed
@@ -26,10 +23,24 @@ install: check-rye pyproject.toml ## Synchronize dependencies
 .PHONY: init
 init: check-rye pyproject.toml .pre-commit-config.yaml install ## Initialize project (first installation)
 	rye run pre-commit install
+	cp .env.example .env || true
+
+.PHONY: format
+format: check-rye ## Format code
+	-rye fmt
+	rye lint --fix
+
+.PHONY: lint
+lint: check-rye ## Run linting checks
+	rye lint
 
 .PHONY: test
 test: check-rye tests ## Run tests with coverage
 	rye test
+
+.PHONY: diff-cover
+diff-cover: check-rye test coverage.xml ## Show code coverage for recent changes
+	rye run diff-cover coverage.xml
 
 .PHONY: precommit
 precommit: check-rye install ## Run pre-commit on all files
@@ -43,6 +54,18 @@ check: check-rye install ## Run all checks (precommit + test)
 .PHONY: build
 build: check-rye install ## Build package
 	rye build
+
+.PHONY: docs
+docs: check-rye install ## Build documentation
+	rye run mkdocs build
+
+.PHONY: docs-serve
+docs-serve: check-rye install ## Serve documentation locally
+	rye run mkdocs serve
+
+.PHONY: docs-deploy
+docs-deploy: check-rye install ## Deploy documentation to GitHub Pages
+	rye run mkdocs gh-deploy
 
 .PHONY: gitignore
 gitignore: ## Generate .gitignore file for this project

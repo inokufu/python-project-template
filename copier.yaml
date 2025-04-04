@@ -1,0 +1,39 @@
+# Main configuration for Copier
+# Documentation: https://copier.readthedocs.io/en/latest/
+
+_subdirectory: template
+
+# Questions
+project_name:
+  type: str
+  help: Project name
+  default: Python project
+
+package_name:
+  type: str
+  help: Package name
+  default: "{{ project_name|lower|replace('-', '_')|replace(' ', '_') }}"
+  validator: >-
+    {% if not package_name.isidentifier() %}
+      The project name must be a valid Python identifier
+    {% endif %}
+
+project_description:
+  type: str
+  help: Short description of the project
+  default: A Python project
+
+author_name:
+  type: str
+  help: Author or organisation name
+  default: Inokufu
+
+author_email:
+  type: str
+  help: Contact email
+  default: contact@inokufu.com
+
+min_python_version:
+  type: str
+  help: Python version
+  default: 3.12

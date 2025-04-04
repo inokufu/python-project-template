@@ -1,8 +1,5 @@
 # Security Policy
 
-> Note: This document applies to the Python project template itself. 
-> Projects generated from this template will have their own version of this document.
-
 ## 🔐 Reporting a Vulnerability
 
 > **IMPORTANT**: Do not open issues that might have security implications!
