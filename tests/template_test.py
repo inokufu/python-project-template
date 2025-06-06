@@ -104,7 +104,7 @@ class TestTemplate:
             "project_description": "A Python project",
             "author_name": "Inokufu",
             "author_email": "contact@inokufu.com",
-            "min_python_version": "3.12",
+            "min_python_version": "3.13",
         }
         self._verify_project(tmp_path=tmp_path, answers=default_answers)
 

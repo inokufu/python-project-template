@@ -1,3 +1,6 @@
+# Note: This file applies to the Python project template itself.
+# Projects generated from this template will have their own version of this file.
+
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 
@@ -18,12 +21,12 @@ repos:
       - id: name-tests-test
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.3.0
+    rev: v2.4.1
     hooks:
       - id: codespell
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
-    rev: v1.3.3
+    rev: v1.4.0
     hooks:
       - id: python-safety-dependencies-check
         args: [ --disable-optional-telemetry ]
