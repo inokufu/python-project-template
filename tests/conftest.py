@@ -19,5 +19,5 @@ def answers() -> dict[str, str]:
         "project_description": "A test project",
         "author_name": "Test Author",
         "author_email": "test@example.com",
-        "min_python_version": "3.12",
+        "min_python_version": "3.13",
     }

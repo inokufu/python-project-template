@@ -82,7 +82,7 @@ This will update your project files while preserving your source code and tests.
 | `project_description` | Brief summary of your project (used in README and pyproject.toml) | "A Python project"    |
 | `author_name`         | Name of the author or organization (for credits and licensing)    |                       |
 | `author_email`        | Contact email (for documentation and package metadata)            |                       |
-| `min_python_version`  | Minimum Python version required                                   | 3.12                  |
+| `min_python_version`  | Minimum Python version required                                   | 3.13                  |
 
 ## 🧑‍💻 Development
 
