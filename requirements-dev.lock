@@ -16,16 +16,16 @@ cfgv==3.4.0
     # via pre-commit
 colorama==0.4.6
     # via copier
-copier==9.6.0
-distlib==0.3.9
+copier==9.10.2
+distlib==0.4.0
     # via virtualenv
-dunamai==1.23.1
+dunamai==1.25.0
     # via copier
-filelock==3.18.0
+filelock==3.20.0
     # via virtualenv
 funcy==2.0
     # via copier
-identify==2.6.9
+identify==2.6.15
     # via pre-commit
 iniconfig==2.1.0
     # via pytest
@@ -34,43 +34,47 @@ jinja2==3.1.6
     # via jinja2-ansible-filters
 jinja2-ansible-filters==1.3.2
     # via copier
-markupsafe==3.0.2
+markupsafe==3.0.3
     # via jinja2
 nodeenv==1.9.1
     # via pre-commit
-packaging==24.2
+packaging==25.0
     # via copier
     # via dunamai
     # via pytest
 pathspec==0.12.1
     # via copier
-platformdirs==4.3.7
+platformdirs==4.5.0
     # via copier
     # via virtualenv
-pluggy==1.5.0
+pluggy==1.6.0
     # via pytest
 plumbum==1.9.0
     # via copier
-pre-commit==4.2.0
-prompt-toolkit==3.0.50
+pre-commit==4.3.0
+prompt-toolkit==3.0.52
     # via questionary
-pydantic==2.10.6
+pydantic==2.12.2
     # via copier
-pydantic-core==2.27.2
+pydantic-core==2.41.4
     # via pydantic
-pygments==2.19.1
+pygments==2.19.2
     # via copier
-pytest==8.3.5
-pyyaml==6.0.2
+    # via pytest
+pytest==8.4.2
+pyyaml==6.0.3
     # via copier
     # via jinja2-ansible-filters
     # via pre-commit
-questionary==2.1.0
+questionary==2.1.1
     # via copier
-typing-extensions==4.13.0
+typing-extensions==4.15.0
     # via pydantic
     # via pydantic-core
-virtualenv==20.29.3
+    # via typing-inspection
+typing-inspection==0.4.2
+    # via pydantic
+virtualenv==20.35.3
     # via pre-commit
-wcwidth==0.2.13
+wcwidth==0.2.14
     # via prompt-toolkit
