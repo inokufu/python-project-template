@@ -34,32 +34,32 @@ repos:
         additional_dependencies:
           - tomli
 
-  - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
-    rev: v1.4.0
-    hooks:
-      - id: python-safety-dependencies-check
-        args: [ --disable-optional-telemetry ]
-        files: requirements.lock
-
   - repo: https://github.com/mrtazz/checkmake.git
     rev: 0.2.2
     hooks:
       - id: checkmake
 
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.9.17
+    hooks:
+      - id: uv-lock
+
   - repo: local
     hooks:
-      - id: rye-fmt
-        name: rye fmt
-        description: "Run 'rye fmt' for Python formatting"
-        entry: rye fmt
+      - id: uv-fmt
+        name: uv run ruff format
+        description: "Run Python formatting"
+        entry: uv run ruff format
         language: python
         types_or: [ python, pyi, jupyter ]
         require_serial: true
+        pass_filenames: false
 
-      - id: rye-lint
-        name: rye lint
-        description: "Run 'rye lint' for Python linting"
-        entry: rye lint
+      - id: uv-lint
+        name: uv run ruff lint
+        description: "Run Python linting"
+        entry: uv run ruff lint
         language: python
         types_or: [ python, pyi, jupyter ]
         require_serial: true
+        pass_filenames: false

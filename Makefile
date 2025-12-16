@@ -3,46 +3,46 @@
 
 .DEFAULT_GOAL := help
 
-# Check if Rye is installed
-RYE_COMMAND := $(shell command -v rye 2> /dev/null)
+# Check if uv is installed
+UV_COMMAND := $(shell command -v uv 2> /dev/null)
 
 .PHONY: help
 help: ## Display this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: all
-all: check-rye install format lint check ## Build everything
+all: check-uv install format lint check ## Build everything
 
-.PHONY: check-rye
-check-rye: ## Check if Rye is installed
-ifndef RYE_COMMAND
-	$(error "Rye is not installed. Please visit https://rye.astral.sh for installation instructions.")
+.PHONY: check-uv
+check-uv: ## Check if uv is installed
+ifndef UV_COMMAND
+	$(error "uv is not installed. Please visit https://docs.astral.sh/uv for installation instructions.")
 endif
 
 .PHONY: install
-install: check-rye pyproject.toml ## Synchronize dependencies
-	rye sync
+install: check-uv pyproject.toml ## Synchronize dependencies
+	uv sync
 
 .PHONY: init
-init: check-rye pyproject.toml .pre-commit-config.yaml install ## Initialize project (first installation)
-	rye run pre-commit install
+init: check-uv pyproject.toml .pre-commit-config.yaml install ## Initialize project (first installation)
+	uv run -- pre-commit install
 
 .PHONY: test
-test: check-rye tests ## Run tests with coverage
-	rye test
+test: check-uv tests ## Run tests with coverage
+	uv run -- pytest
 
 .PHONY: precommit
-precommit: check-rye install ## Run pre-commit on all files
-	rye run pre-commit run --all-files
+precommit: check-uv install ## Run pre-commit on all files
+	uv run -- pre-commit run --all-files
 
 .PHONY: check
-check: check-rye install ## Run all checks (precommit + test)
+check: check-uv install ## Run all checks (precommit + test)
 	make precommit
 	make test
 
 .PHONY: build
-build: check-rye install ## Build package
-	rye build
+build: check-uv install ## Build package
+	uv build
 
 .PHONY: gitignore
 gitignore: ## Generate .gitignore file for this project

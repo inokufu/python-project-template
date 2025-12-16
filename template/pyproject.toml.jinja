@@ -5,25 +5,29 @@ description = "{{ project_description }}"
 authors = [
   { name = "{{ author_name }}", email = "{{ author_email }}" }
 ]
+readme = "docs/README.md"
+requires-python = ">= {{ min_python_version }}"
+
 dependencies = [
+]
+
+[project.scripts]
+
+[tool.uv]
+add-bounds = "minor"
+
+[dependency-groups]
+dev = [
     "mkdocs~=1.6.1",
     "mkdocstrings-python~=1.18.2",
     "mkdocs-material~=9.6.22",
     "griffe-inherited-docstrings~=1.1.2",
-]
-readme = "docs/README.md"
-requires-python = ">= {{ min_python_version }}"
-
-[project.scripts]
-
-[tool.rye]
-managed = true
-dev-dependencies = [
     "diff-cover~=9.7.1",
     "pre-commit~=4.3.0",
     "pytest~=8.4.2",
     "pytest-mock~=3.15.1",
     "pytest-cov~=7.0.0",
+    "ruff~=0.14.9"
 ]
 
 [tool.ruff]
@@ -62,10 +66,9 @@ lint.extend-unfixable = [
 
 [tool.pytest.ini_options]
 pythonpath = [".", "src"]
-addopts = "--cov=src --cov-report=term --cov-report=xml"
+addopts = ["--cov=src", "--cov-report=term", "--cov-report=xml"]
 
 [tool.coverage.report]
 exclude_also = [
-  "@abstractmethod",
-  "if TYPE_CHECKING:",
+  "@(abc\\.)?abstractmethod",
 ]

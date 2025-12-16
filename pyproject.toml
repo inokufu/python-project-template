@@ -3,19 +3,23 @@
 
 [project]
 name = "python-project-template"
-version = "1.0.0"
+version = "2.0.0"
 description = "A Copier template for modern Python projects"
 authors = [
   { name = "Inokufu", email = "contact@inokufu.com" }
 ]
-dependencies = []
 readme = "docs/README.md"
-requires-python = ">= 3.13"
+requires-python = ">= 3.14"
 
-[tool.rye]
-managed = true
-dev-dependencies = [
-    "copier~=9.10.2",
-    "pre-commit~=4.3.0",
-    "pytest~=8.4.2",
+dependencies = []
+
+[dependency-groups]
+dev = [
+  "copier~=9.10.2",
+  "pre-commit~=4.3.0",
+  "pytest~=8.4.2",
+  "ruff~=0.14.9"
 ]
+
+[tool.uv]
+add-bounds = "minor"

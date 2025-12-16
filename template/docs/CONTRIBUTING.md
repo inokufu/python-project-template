@@ -21,7 +21,7 @@ the [Code of Conduct](CODE_OF_CONDUCT.md).
 ### Prerequisites
 
 - Python 3.13 or higher
-- [Rye](https://rye.astral.sh) for dependency management
+- [uv](https://docs.astral.sh/uv/) for dependency management
 - Git for version control
 
 ### Editor Configuration

@@ -18,15 +18,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Rye
-        id: setup-rye
-        uses: eifinger/setup-rye@v4
+      - name: Install uv
+        id: setup-uv
+        uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
-          github-token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+
+      - name: Set up Python
+        run: uv python install
 
       - name: Install dependencies
-        if: steps.setup-rye.outputs.cache-hit != 'true'
         run: make install
 
       - name: Cache pre-commit
@@ -56,19 +57,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Rye
-        id: setup-rye
-        uses: eifinger/setup-rye@v4
+      - name: Install uv
+        id: setup-uv
+        uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
-          cache-prefix: {% raw %}${{ matrix.python-version }}{% endraw %}
-          github-token: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
-
-      - name: Pin Python {% raw %}${{ matrix.python-version }}{% endraw %}
-        run: rye pin {% raw %}${{ matrix.python-version }}{% endraw %}
+          python-version: {% raw %}${{ matrix.python-version }}{% endraw %}
 
       - name: Install dependencies
-        if: steps.setup-rye.outputs.cache-hit != 'true'
         run: make install
 
       - name: Run tests with coverage
