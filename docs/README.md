@@ -3,6 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-FFD43B?logo=python)](https://www.python.org/)
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-orange.json)](https://github.com/copier-org/copier)
 [![uv](https://img.shields.io/badge/uv-261230?logo=astral)](https://docs.astral.sh/uv/)
+[![ty](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ty/main/assets/badge/v0.json)](https://github.com/astral-sh/ty)
 ![License](https://img.shields.io/badge/GPL--3.0-red?logo=gnu)
 [![EditorConfig](https://img.shields.io/badge/EditorConfig-333333?logo=editorconfig)](https://editorconfig.org/)
 [![Pre-commit](https://img.shields.io/badge/pre--commit-40332E?logo=pre-commit)](https://pre-commit.com/)
@@ -17,7 +18,7 @@ applications with best practices.
   management and virtual environments
 - 📦 **Standardized project structure** following best practices for Python
   packages
-- 💅 **Code quality** with pre-commit, well configured Ruff (formatter & linter)
+- 💅 **Code quality** with pre-commit, well configured Ruff (formatter & linter) and Ty (type checker)
 - 🧪 **Testing** setup with pytest and coverage reports
 - 📝 **Documentation** with MkDocs and Material theme, including well-structured
   README and CHANGELOG

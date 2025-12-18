@@ -34,6 +34,10 @@ format: check-uv ## Format code
 lint: check-uv ## Run linting checks
 	uv run -- ruff check
 
+.PHONY: typecheck
+typecheck: check-uv ## Run type checking with ty
+	rye run -- ty check
+
 .PHONY: test
 test: check-uv tests ## Run tests with coverage
 	uv run -- pytest

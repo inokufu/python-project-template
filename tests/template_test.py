@@ -50,7 +50,7 @@ class TestTemplate:
     @staticmethod
     def _verify_project(tmp_path: Path, answers: dict[str, str]) -> None:
         """Test generating a project."""
-        package_name = answers.get("package_name")
+        package_name = answers["package_name"]
 
         # Check that files exist
         for file in [
