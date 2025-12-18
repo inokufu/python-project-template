@@ -25,12 +25,17 @@ repos:
     hooks:
       - id: codespell
 
-  - repo: https://github.com/mrtazz/checkmake.git
-    rev: 0.2.2
-    hooks:
-      - id: checkmake
-
   - repo: https://github.com/astral-sh/uv-pre-commit
     rev: 0.9.17
     hooks:
       - id: uv-lock
+
+  - repo: https://github.com/owenlamont/uv-secure
+    rev: 0.15.2
+    hooks:
+      - id: uv-secure
+
+  - repo: https://github.com/mrtazz/checkmake.git
+    rev: 0.2.2
+    hooks:
+      - id: checkmake
