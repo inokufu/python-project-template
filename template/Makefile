@@ -36,7 +36,7 @@ lint: check-uv ## Run linting checks
 
 .PHONY: typecheck
 typecheck: check-uv ## Run type checking with ty
-	rye run -- ty check
+	uv run -- ty check
 
 .PHONY: test
 test: check-uv tests ## Run tests with coverage
