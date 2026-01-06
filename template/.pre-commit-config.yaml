@@ -61,9 +61,9 @@ repos:
         pass_filenames: false
 
       - id: uv-lint
-        name: uv run ruff lint
+        name: uv run ruff check
         description: "Run Python linting"
-        entry: uv run ruff lint
+        entry: uv run ruff check
         language: python
         types_or: [ python, pyi, jupyter ]
         require_serial: true
