@@ -18,7 +18,7 @@ dev = [
   "copier~=9.10.2",
   "pre-commit~=4.3.0",
   "pytest~=8.4.2",
-  "ruff~=0.14.9"
+  "ruff~=0.14.9",
 ]
 
 [tool.uv]

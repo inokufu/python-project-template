@@ -39,9 +39,6 @@ jobs:
       - name: Run pre-commit checks
         run: make precommit
 
-      - name: Lint
-        run: make lint
-
       - name: Lint GitHub Actions
         uses: eifinger/actionlint-action@v1
 
@@ -49,10 +46,6 @@ jobs:
     name: Test Python
     needs: lint
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["{{ min_python_version }}"]  # Add additional versions as needed
-      fail-fast: false
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -62,7 +55,6 @@ jobs:
         uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
-          python-version: {% raw %}${{ matrix.python-version }}{% endraw %}
 
       - name: Install dependencies
         run: make install
@@ -73,16 +65,19 @@ jobs:
       - name: Upload coverage report as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-report-{% raw %}${{ matrix.python-version }}{% endraw %}
+          name: coverage-report
+          retention-days: 7
           path: |
             htmlcov/
             coverage.xml
-            retention-days: 7
 
   greeting:
     name: Greet first-time contributors
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' || github.event_name == 'issues'
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
       - uses: actions/first-interaction@v1
         with:

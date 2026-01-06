@@ -68,3 +68,12 @@ repos:
         types_or: [ python, pyi, jupyter ]
         require_serial: true
         pass_filenames: false
+
+      - id: ty-check
+        name: uv run ty check
+        description: "Run Ty Type checker"
+        entry: uv run ty check
+        language: python
+        types_or: [ python, pyi, jupyter ]
+        require_serial: true
+        pass_filenames: false
