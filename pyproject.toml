@@ -15,10 +15,10 @@ dependencies = []
 
 [dependency-groups]
 dev = [
-  "copier~=9.10.2",
-  "pre-commit~=4.3.0",
-  "pytest~=8.4.2",
-  "ruff~=0.14.9",
+    "copier>=9.10.3,<9.11.0",
+    "pre-commit>=4.3.0,<4.4.0",
+    "pytest>=8.4.2,<8.5.0",
+    "ruff>=0.14.9,<0.14.10",
 ]
 
 [tool.uv]

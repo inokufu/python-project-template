@@ -22,7 +22,7 @@ repos:
       - id: name-tests-test
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.21.0
+    rev: v3.21.2
     hooks:
       - id: pyupgrade
         args: [ --py312-plus ]
@@ -35,12 +35,12 @@ repos:
           - tomli
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.9.17
+    rev: 0.9.22
     hooks:
       - id: uv-lock
 
   - repo: https://github.com/owenlamont/uv-secure
-    rev: 0.15.2
+    rev: 0.15.4
     hooks:
       - id: uv-secure
 
