@@ -50,7 +50,7 @@ class TestTemplate:
     @staticmethod
     def _verify_project(tmp_path: Path, answers: dict[str, str]) -> None:
         """Test generating a project."""
-        package_name = answers.get("package_name")
+        package_name = answers["package_name"]
 
         # Check that files exist
         for file in [
@@ -104,7 +104,7 @@ class TestTemplate:
             "project_description": "A Python project",
             "author_name": "Inokufu",
             "author_email": "contact@inokufu.com",
-            "min_python_version": "3.13",
+            "min_python_version": "3.14",
         }
         self._verify_project(tmp_path=tmp_path, answers=default_answers)
 

@@ -21,7 +21,7 @@ the [Code of Conduct](CODE_OF_CONDUCT.md).
 ### Prerequisites
 
 - Python 3.13 or higher
-- [Rye](https://rye.astral.sh) for dependency management
+- [uv](https://docs.astral.sh/uv/) for dependency management
 - Git for version control
 
 ### Editor Configuration
@@ -34,6 +34,7 @@ This project uses pre-commit to enforce code quality checks before each commit.
 
 ### Pre-commit hooks installed
 - Code formatting with Ruff
+- Type checking with Ty
 - Python syntax checking
 - Security vulnerability scanning
 - Trailing whitespace removal
@@ -132,6 +133,7 @@ make help
 This project follows these conventions:
 
 - Code formatting with [ruff](https://docs.astral.sh/ruff/)
+- Type checking with [ty](https://docs.astral.sh/ty/)
 - Type annotations for all functions
 - Documentation
   using [Google style docstrings](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)

@@ -25,12 +25,15 @@ repos:
     hooks:
       - id: codespell
 
-  - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
-    rev: v1.4.0
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.9.22
     hooks:
-      - id: python-safety-dependencies-check
-        args: [ --disable-optional-telemetry ]
-        files: requirements.lock
+      - id: uv-lock
+
+  - repo: https://github.com/owenlamont/uv-secure
+    rev: 0.15.4
+    hooks:
+      - id: uv-secure
 
   - repo: https://github.com/mrtazz/checkmake.git
     rev: 0.2.2

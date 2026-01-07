@@ -64,7 +64,7 @@ class TestCommands:
         Raises:
             AssertionError: If the command fails with an unexpected return code
         """
-        # Create environment with PATH including rye if installed
+        # Create environment with PATH including uv if installed
         env = os.environ.copy()
 
         # Run the make command
@@ -78,24 +78,22 @@ class TestCommands:
 
         return result
 
-    @pytest.mark.skipif(not shutil.which("rye"), reason="Rye not installed")
-    def test_make_check_rye(self, generated_project: Path) -> None:
-        """Test that 'make check-rye' works."""
-        result = self.run_make_command(generated_project, "check-rye")
+    @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
+    def test_make_check_uv(self, generated_project: Path) -> None:
+        """Test that 'make check-uv' works."""
+        result = self.run_make_command(generated_project, "check-uv")
         assert (
-            "Rye is installed" in result.stdout
+            "uv is installed" in result.stdout
             or "is not installed" not in result.stderr
         )
 
-    @pytest.mark.skipif(not shutil.which("rye"), reason="Rye not installed")
+    @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
     def test_make_install(self, generated_project: Path) -> None:
         """Test that 'make install' works."""
         result = self.run_make_command(generated_project, "install")
-        assert (
-            "Synchronizing dependencies" in result.stdout or "rye sync" in result.stdout
-        )
+        assert "Resolved" in result.stdout or "uv sync" in result.stdout
 
-    @pytest.mark.skipif(not shutil.which("rye"), reason="Rye not installed")
+    @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
     def test_make_init(self, generated_project: Path) -> None:
         """Test that 'make init' works."""
         result = self.run_make_command(generated_project, "init")
@@ -104,7 +102,7 @@ class TestCommands:
             or "Initializing project" in result.stdout
         )
 
-    @pytest.mark.skipif(not shutil.which("rye"), reason="Rye not installed")
+    @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
     def test_make_precommit(self, generated_project: Path) -> None:
         """Test that 'make precommit' works after initialization."""
         self.run_make_command(generated_project, "init")

@@ -5,25 +5,28 @@ description = "{{ project_description }}"
 authors = [
   { name = "{{ author_name }}", email = "{{ author_email }}" }
 ]
-dependencies = [
-    "mkdocs~=1.6.1",
-    "mkdocstrings-python~=1.18.2",
-    "mkdocs-material~=9.6.22",
-    "griffe-inherited-docstrings~=1.1.2",
-]
 readme = "docs/README.md"
 requires-python = ">= {{ min_python_version }}"
 
-[project.scripts]
+dependencies = [
+]
 
-[tool.rye]
-managed = true
-dev-dependencies = [
-    "diff-cover~=9.7.1",
-    "pre-commit~=4.3.0",
-    "pytest~=8.4.2",
-    "pytest-mock~=3.15.1",
-    "pytest-cov~=7.0.0",
+[tool.uv]
+add-bounds = "minor"
+
+[dependency-groups]
+dev = [
+    "diff-cover>=10.1.0,<10.2.0",
+    "griffe-inherited-docstrings>=1.1.2,<1.2.0",
+    "mkdocs>=1.6.1,<1.7.0",
+    "mkdocs-material>=9.6.23,<9.7.0",
+    "mkdocstrings-python>=1.18.2,<1.19.0",
+    "pre-commit>=4.5.1,<4.6.0",
+    "pytest>=9.0.2,<9.1.0",
+    "pytest-cov>=7.0.0,<7.1.0",
+    "pytest-mock>=3.15.1,<3.16.0",
+    "ruff>=0.14.10,<0.14.11",
+    "ty>=0.0.9,<0.0.10",
 ]
 
 [tool.ruff]
@@ -62,10 +65,9 @@ lint.extend-unfixable = [
 
 [tool.pytest.ini_options]
 pythonpath = [".", "src"]
-addopts = "--cov=src --cov-report=term --cov-report=xml"
+addopts = ["--cov=src", "--cov-report=term", "--cov-report=xml"]
 
 [tool.coverage.report]
 exclude_also = [
-  "@abstractmethod",
-  "if TYPE_CHECKING:",
+  "@(abc\\.)?abstractmethod",
 ]

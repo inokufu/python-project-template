@@ -2,7 +2,8 @@
 
 [![Python](https://img.shields.io/badge/Python-FFD43B?logo=python)](https://www.python.org/)
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-orange.json)](https://github.com/copier-org/copier)
-[![Rye](https://img.shields.io/badge/Rye-000000?logo=rye)](https://rye.astral.sh/)
+[![uv](https://img.shields.io/badge/uv-261230?logo=astral)](https://docs.astral.sh/uv/)
+[![ty](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ty/main/assets/badge/v0.json)](https://github.com/astral-sh/ty)
 ![License](https://img.shields.io/badge/GPL--3.0-red?logo=gnu)
 [![EditorConfig](https://img.shields.io/badge/EditorConfig-333333?logo=editorconfig)](https://editorconfig.org/)
 [![Pre-commit](https://img.shields.io/badge/pre--commit-40332E?logo=pre-commit)](https://pre-commit.com/)
@@ -13,11 +14,11 @@ applications with best practices.
 
 ## ✨ Features
 
-- 🛠️ **Modern tooling** with [Rye](https://rye.astral.sh/) for dependency
+- 🛠️ **Modern tooling** with [uv](https://docs.astral.sh/uv/) for dependency
   management and virtual environments
 - 📦 **Standardized project structure** following best practices for Python
   packages
-- 💅 **Code quality** with pre-commit, well configured Ruff (formatter & linter)
+- 💅 **Code quality** with pre-commit, well configured Ruff (formatter & linter) and Ty (type checker)
 - 🧪 **Testing** setup with pytest and coverage reports
 - 📝 **Documentation** with MkDocs and Material theme, including well-structured
   README and CHANGELOG
@@ -36,6 +37,7 @@ applications with best practices.
 ## 🔧 Prerequisites
 
 - [Python](https://www.python.org/)
+- [uv](https://docs.astral.sh/uv/) - Fast Python package installer and resolver
 - [Copier](https://copier.readthedocs.io/)
 
 ## 🚀 Getting Started
