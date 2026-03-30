@@ -1,0 +1,3 @@
+# Avoid prek to discover the .pre-commit-config.yaml file under "template" directory and launch it in workspace mode.
+# See https://prek.j178.dev/workspace/
+template/

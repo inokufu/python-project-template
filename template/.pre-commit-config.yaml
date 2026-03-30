@@ -1,4 +1,4 @@
-# See https://pre-commit.com for more information
+# See https://prek.j178.dev/ for more information
 # See https://pre-commit.com/hooks.html for more hooks
 
 repos:
@@ -46,7 +46,7 @@ repos:
         args: [ --show-severity, --ignore-unfixed, --severity=medium ]
 
   - repo: https://github.com/mrtazz/checkmake.git
-    rev: 0.2.2
+    rev: v0.3.2
     hooks:
       - id: checkmake
 

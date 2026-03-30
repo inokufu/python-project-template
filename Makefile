@@ -25,7 +25,7 @@ install: check-uv pyproject.toml ## Synchronize dependencies
 
 .PHONY: init
 init: check-uv pyproject.toml .pre-commit-config.yaml install ## Initialize project (first installation)
-	uv run -- pre-commit install
+	uv run -- prek install
 
 .PHONY: test
 test: check-uv tests ## Run tests with coverage
@@ -33,7 +33,7 @@ test: check-uv tests ## Run tests with coverage
 
 .PHONY: precommit
 precommit: check-uv install ## Run pre-commit on all files
-	uv run -- pre-commit run --all-files
+	uv run -- prek run --all-files
 
 .PHONY: check
 check: check-uv install ## Run all checks (precommit + test)

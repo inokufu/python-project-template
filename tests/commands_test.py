@@ -98,7 +98,7 @@ class TestCommands:
         """Test that 'make init' works."""
         result = self.run_make_command(generated_project, "init")
         assert (
-            "pre-commit install" in result.stdout
+            "prek install" in result.stdout
             or "Initializing project" in result.stdout
         )
 
