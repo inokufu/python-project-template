@@ -26,12 +26,12 @@ repos:
       - id: codespell
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.11.2
+    rev: 0.11.6
     hooks:
       - id: uv-lock
 
   - repo: https://github.com/owenlamont/uv-secure
-    rev: 0.17.0
+    rev: 0.17.1
     hooks:
       - id: uv-secure
         args: [ --show-severity, --ignore-unfixed, --severity=medium ]
