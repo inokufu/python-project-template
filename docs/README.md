@@ -6,7 +6,7 @@
 [![ty](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ty/main/assets/badge/v0.json)](https://github.com/astral-sh/ty)
 ![License](https://img.shields.io/badge/GPL--3.0-red?logo=gnu)
 [![EditorConfig](https://img.shields.io/badge/EditorConfig-333333?logo=editorconfig)](https://editorconfig.org/)
-[![Pre-commit](https://img.shields.io/badge/pre--commit-40332E?logo=pre-commit)](https://pre-commit.com/)
+[![Prek](https://img.shields.io/badge/prek-F54327?logo=prek)](https://prek.j178.dev/)
 [![Makefile](https://img.shields.io/badge/Makefile-427819?logo=gnu)](https://www.gnu.org/software/make/manual/make.html)
 
 A modern Copier template for creating standardized Python packages and
@@ -18,7 +18,7 @@ applications with best practices.
   management and virtual environments
 - 📦 **Standardized project structure** following best practices for Python
   packages
-- 💅 **Code quality** with pre-commit, well configured Ruff (formatter & linter) and Ty (type checker)
+- 💅 **Code quality** with prek(pre-commit), well configured Ruff (formatter & linter) and Ty (type checker)
 - 🧪 **Testing** setup with pytest and coverage reports
 - 📝 **Documentation** with MkDocs and Material theme, including well-structured
   README and CHANGELOG

@@ -30,7 +30,7 @@ This project uses EditorConfig to maintain consistent coding styles.
 Find plugin for your editor at [editorconfig.org](https://editorconfig.org/#download)
 
 ### Pre-commit Hooks
-This project uses pre-commit to enforce code quality checks before each commit.
+This project uses prek to enforce code quality checks before each commit.
 
 ### Pre-commit hooks installed
 - Code formatting with Ruff
@@ -121,7 +121,7 @@ make help
 | format      | Format code                             |
 | lint        | Run linting checks                      |
 | test        | Run tests with coverage                 |
-| precommit   | Run pre-commit on all files             |
+| precommit   | Run prek on all files                   |
 | check       | Run all checks (precommit + test)       |
 | build       | Build package                           | 
 | docs        | Build documentation                     |
