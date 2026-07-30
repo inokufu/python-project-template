@@ -3,7 +3,7 @@
 
 [project]
 name = "python-project-template"
-version = "2.3.0"
+version = "2.3.1"
 description = "A Copier template for modern Python projects"
 authors = [
   { name = "Inokufu", email = "contact@inokufu.com" }
@@ -15,10 +15,10 @@ dependencies = []
 
 [dependency-groups]
 dev = [
-    "copier>=9.15.2,<9.16.0",
-    "prek>=0.4.5,<0.4.6",
+    "copier>=9.17.0,<9.18.0",
+    "prek>=0.4.11,<0.4.12",
     "pytest>=9.1.1,<9.2.0",
-    "ruff>=0.15.18,<0.15.19",
+    "ruff>=0.16.0,<0.16.1",
 ]
 
 [tool.uv]
