@@ -293,7 +293,7 @@ wheels = [
 
 [[package]]
 name = "python-project-template"
-version = "2.2.1"
+version = "2.3.0"
 source = { virtual = "." }
 
 [package.dev-dependencies]

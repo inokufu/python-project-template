@@ -19,6 +19,7 @@ applications with best practices.
 - 📦 **Standardized project structure** following best practices for Python
   packages
 - 💅 **Code quality** with prek(pre-commit), well configured Ruff (formatter & linter) and Ty (type checker)
+- 🔒 **Dependency security** with [`uv audit`](https://docs.astral.sh/uv/) run as a pre-commit hook to catch known vulnerabilities
 - 🧪 **Testing** setup with pytest and coverage reports
 - 📝 **Documentation** with MkDocs and Material theme, including well-structured
   README and CHANGELOG
