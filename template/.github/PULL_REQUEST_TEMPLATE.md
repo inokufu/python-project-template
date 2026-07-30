@@ -3,11 +3,11 @@
 ## Description
 
 <!-- Provide a concise description of the changes you've made -->
-
-## Related Issue
-
+<!-- If appropriate, include screenshots or recordings to demonstrate the changes -->
 <!-- Link to the related issue, if applicable -->
-Fixes #[issue_number]
+<!-- Provide a brief overview of the implementation, if necessary -->
+<!-- Note any special deployment considerations, if applicable -->
+
 
 ## Type of Change
 
@@ -24,10 +24,6 @@ Fixes #[issue_number]
 - [ ] 🔧 Configuration change
 - [ ] 🔄 CI/CD related changes
 
-## Motivation and Context
-
-<!-- Why is this change required? What problem does it solve? -->
-
 ## How Has This Been Tested?
 
 <!-- Please describe how you tested your changes -->
@@ -36,14 +32,6 @@ Fixes #[issue_number]
 - [ ] Integration tests
 - [ ] Manual tests
 - [ ] Other (please specify):
-
-## Screenshots/Recordings
-
-<!-- If appropriate, include screenshots or recordings to demonstrate the changes -->
-
-## Implementation Details
-
-<!-- Provide a brief overview of the implementation, if necessary -->
 
 ## Checklist
 
@@ -56,11 +44,3 @@ Fixes #[issue_number]
 - [ ] My changes generate no new warnings or errors
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] New and existing unit tests pass locally with my changes
-
-## Deployment Notes
-
-<!-- Note any special deployment considerations, if applicable -->
-
-## Additional Notes
-
-<!-- Add any other context about the pull request here -->
