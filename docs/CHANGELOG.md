@@ -10,6 +10,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2026-08-25
+
+### Added
+
+- Validate `min_python_version`: must be 3.10 or higher, written as major.minor
+- CI workflow for the template itself (prek checks and tests)
+
+### Changed
+
+- Updated project dependencies to latest versions
+- Ignore flake8-copyright (CPY) rules in generated projects
+- Derive the pyupgrade and ruff target versions from `min_python_version`
+- Document the git prerequisites of `copier update`
+- Improved the test suite, which now catches invalid generated files
+
+### Fixed
+
+- Name the documentation site after the project instead of "My Docs"
+- `make test` no longer fails on a project with no test written yet
+
+### Security
+
+- Audit GitHub Actions workflows with zizmor
+- Restrict workflow permissions to `contents: read` and stop persisting
+  credentials on checkout
+
 ## [2.3.1] - 2026-07-30
 
 ### Changed

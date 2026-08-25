@@ -25,7 +25,8 @@ repos:
     rev: v3.21.2
     hooks:
       - id: pyupgrade
-        args: [ --py312-plus ]
+        # Capped at the most recent version pyupgrade supports
+        args: [ --py3{{ [min_python_version.split('.')[1] | int, 14] | min }}-plus ]
 
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.3
@@ -38,6 +39,11 @@ repos:
     rev: v0.3.2
     hooks:
       - id: checkmake
+
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: v1.29.0
+    hooks:
+      - id: zizmor
 
   - repo: local
     hooks:

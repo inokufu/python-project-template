@@ -1,0 +1,6 @@
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        # A version tag is enough: commit hashes are unmaintainable here
+        "*": ref-pin

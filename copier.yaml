@@ -36,4 +36,10 @@ author_email:
 min_python_version:
   type: str
   help: Python version
-  default: 3.14
+  default: "3.14"
+  validator: >-
+    {% set version = min_python_version.split('.') %}
+    {% set valid = version | length == 2 and version[0] == '3' and version[1].isdigit() and version[1] | int >= 10 %}
+    {% if not valid %}
+      The Python version must be 3.10 or higher, written as major.minor
+    {% endif %}

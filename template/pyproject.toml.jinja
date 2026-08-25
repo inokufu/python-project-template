@@ -1,9 +1,9 @@
 [project]
 name = "{{ package_name }}"
 version = "0.1.0"
-description = "{{ project_description }}"
+description = "{{ project_description | replace('\\', '\\\\') | replace('"', '\\"') }}"
 authors = [
-  { name = "{{ author_name }}", email = "{{ author_email }}" }
+  { name = "{{ author_name | replace('\\', '\\\\') | replace('"', '\\"') }}", email = "{{ author_email | replace('\\', '\\\\') | replace('"', '\\"') }}" }
 ]
 readme = "docs/README.md"
 requires-python = ">= {{ min_python_version }}"
@@ -17,22 +17,22 @@ package = true
 
 [dependency-groups]
 dev = [
-    "diff-cover>=10.4.1,<10.5.0",
+    "diff-cover>=10.5.1,<10.6.0",
     "griffe-inherited-docstrings>=1.1.3,<1.2.0",
     "mkdocs>=1.6.1,<1.7.0",
     "mkdocs-material>=9.7.7,<9.8.0",
-    "mkdocstrings-python>=2.0.5,<2.1.0",
-    "prek>=0.4.11,<0.4.12",
+    "mkdocstrings-python>=2.0.7,<2.1.0",
+    "prek>=0.4.14,<0.4.15",
     "pytest>=9.1.1,<9.2.0",
     "pytest-cov>=7.1.0,<7.2.0",
     "pytest-mock>=3.15.1,<3.16.0",
-    "ruff>=0.16.0,<0.16.1",
-    "ty>=0.0.65,<0.0.66",
+    "ruff>=0.16.4,<0.16.5",
+    "ty>=0.0.74,<0.0.75",
 ]
 
 [tool.ruff]
 output-format = "concise"
-target-version = "py{{ min_python_version|replace('.', '') }}"
+target-version = "py3{{ [min_python_version.split('.')[1] | int, 15] | min }}"
 line-length = 88
 indent-width = 4
 
@@ -48,6 +48,7 @@ lint.ignore = [
   "INP001", # implicit-namespace-package
   "TRY003", # raise-vanilla-args
   "TRY401", # verbose-log-message
+  "CPY", # flake8-copyright
 ]
 lint.extend-unfixable = [
   "TC002", # typing-only-third-party-import
