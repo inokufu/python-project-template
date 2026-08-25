@@ -56,6 +56,8 @@ cd path/to/destination
 
 # Init GIT (if you haven't already done)
 git init
+git add --all
+git commit -m "Initial commit"
 
 # Initialize the project
 make init
@@ -67,6 +69,9 @@ That's it! Feel free to focus on the coding within `src` and `tests` folders !
 
 One of the advantages of Copier is the ability to update existing projects when
 the template is improved:
+
+Copier only updates a project that is tracked by git and has no uncommitted
+changes: commit or stash your work first, including untracked files.
 
 ```bash
 # Update your project with the latest template version
@@ -85,7 +90,7 @@ This will update your project files while preserving your source code and tests.
 | `project_description` | Brief summary of your project (used in README and pyproject.toml) | "A Python project"    |
 | `author_name`         | Name of the author or organization (for credits and licensing)    |                       |
 | `author_email`        | Contact email (for documentation and package metadata)            |                       |
-| `min_python_version`  | Minimum Python version required                                   | 3.13                  |
+| `min_python_version`  | Minimum Python version required (3.10 or higher, as major.minor)  | 3.14                  |
 
 ## 🧑‍💻 Development
 
