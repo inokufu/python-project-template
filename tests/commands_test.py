@@ -1,4 +1,3 @@
-import os
 import shutil
 import subprocess
 from pathlib import Path
@@ -40,11 +39,12 @@ class TestCommands:
         for key, value in answers.items():
             cmd.extend(["-d", f"{key}={value}"])
 
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        result = subprocess.run(cmd, capture_output=True, text=True, check=False)
         assert result.returncode == 0, f"Copier failed: {result.stderr}"
 
-        # Initialize git repo (needed for some commands)
-        subprocess.run(["git", "init"], cwd=project_dir)
+        # Track files: prek only checks what git knows about
+        subprocess.run(["git", "init"], cwd=project_dir, check=True)
+        subprocess.run(["git", "add", "--all"], cwd=project_dir, check=True)
         return project_dir
 
     @staticmethod
@@ -64,12 +64,13 @@ class TestCommands:
         Raises:
             AssertionError: If the command fails with an unexpected return code
         """
-        # Create environment with PATH including uv if installed
-        env = os.environ.copy()
-
         # Run the make command
         result = subprocess.run(
-            ["make", command], cwd=project_dir, env=env, capture_output=True, text=True
+            ["make", command],
+            cwd=project_dir,
+            capture_output=True,
+            text=True,
+            check=False,
         )
 
         assert result.returncode == expected_returncode, (
@@ -81,29 +82,48 @@ class TestCommands:
     @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
     def test_make_check_uv(self, generated_project: Path) -> None:
         """Test that 'make check-uv' works."""
-        result = self.run_make_command(generated_project, "check-uv")
-        assert (
-            "uv is installed" in result.stdout
-            or "is not installed" not in result.stderr
-        )
+        self.run_make_command(generated_project, "check-uv")
 
     @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
     def test_make_install(self, generated_project: Path) -> None:
         """Test that 'make install' works."""
-        result = self.run_make_command(generated_project, "install")
-        assert "Resolved" in result.stdout or "uv sync" in result.stdout
+        self.run_make_command(generated_project, "install")
+
+        assert (generated_project / ".venv").is_dir()
+        assert (generated_project / "uv.lock").is_file()
 
     @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
     def test_make_init(self, generated_project: Path) -> None:
         """Test that 'make init' works."""
-        result = self.run_make_command(generated_project, "init")
-        assert (
-            "prek install" in result.stdout
-            or "Initializing project" in result.stdout
-        )
+        self.run_make_command(generated_project, "init")
+
+        assert (generated_project / ".git" / "hooks" / "pre-commit").is_file()
 
     @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
     def test_make_precommit(self, generated_project: Path) -> None:
         """Test that 'make precommit' works after initialization."""
         self.run_make_command(generated_project, "init")
         self.run_make_command(generated_project, "precommit")
+
+    @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
+    def test_make_test(self, generated_project: Path) -> None:
+        """Test that 'make test' works on a freshly generated project."""
+        self.run_make_command(generated_project, "test")
+
+        assert (generated_project / "coverage.xml").is_file()
+
+    @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
+    def test_make_build(self, generated_project: Path) -> None:
+        """Test that 'make build' works."""
+        self.run_make_command(generated_project, "build")
+
+        dist = generated_project / "dist"
+        assert list(dist.glob("*.whl"))
+        assert list(dist.glob("*.tar.gz"))
+
+    @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
+    def test_make_docs(self, generated_project: Path) -> None:
+        """Test that 'make docs' works."""
+        self.run_make_command(generated_project, "docs")
+
+        assert (generated_project / "site" / "index.html").is_file()

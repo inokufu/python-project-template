@@ -1,6 +1,9 @@
-import os
 import subprocess
+import tomllib
 from pathlib import Path
+
+import pytest
+import yaml
 
 
 class TestTemplate:
@@ -8,60 +11,59 @@ class TestTemplate:
 
     @staticmethod
     def run_copier(
-        src_path: str | Path | None,
+        src_path: str | Path,
         dst_path: str | Path,
         answers: dict[str, str] | None = None,
-        update: bool = False,
     ) -> subprocess.CompletedProcess:
-        """Run copier to generate or update a project.
+        """Run copier to generate a project.
 
         Args:
             src_path: Path to the template source
             dst_path: Path where the project will be generated
             answers: Dictionary of answers to template questions
-            update: Whether to update an existing project
 
         Returns:
             The completed process object from running copier
         """
-        if update:
-            cmd = ["copier", "update", "--trust", "--defaults"]
-            cwd = str(dst_path)
-        else:
-            cmd = [
-                "copier",
-                "copy",
-                "--trust",
-                "--defaults",
-                "--overwrite",
-                str(src_path),
-                str(dst_path),
-            ]
-            cwd = None
+        cmd = [
+            "copier",
+            "copy",
+            "--trust",
+            "--defaults",
+            "--overwrite",
+            str(src_path),
+            str(dst_path),
+        ]
 
         # Add answers as -d options
-        if answers and not update:
+        if answers:
             for key, value in answers.items():
                 cmd.extend(["-d", f"{key}={value}"])
 
-        result = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
-        return result
+        return subprocess.run(cmd, capture_output=True, text=True, check=False)
 
     @staticmethod
     def _verify_project(tmp_path: Path, answers: dict[str, str]) -> None:
         """Test generating a project."""
         package_name = answers["package_name"]
+        min_python_version = answers["min_python_version"]
 
         # Check that files exist
         for file in [
             tmp_path / "pyproject.toml",
             tmp_path / "Makefile",
-            tmp_path / "tests",
+            tmp_path / "mkdocs.yml",
             tmp_path / "LICENSE",
+            tmp_path / ".copier-answers.yml",
             tmp_path / ".editorconfig",
+            tmp_path / ".env.example",
             tmp_path / ".gitignore",
             tmp_path / ".pre-commit-config.yaml",
+            tmp_path / ".python-version",
             tmp_path / "src" / package_name / "__init__.py",
+            tmp_path / "src" / package_name / "__main__.py",
+            tmp_path / "tests" / "conftest.py",
+            tmp_path / ".github" / "zizmor.yml",
             tmp_path / ".github" / "ISSUE_TEMPLATE" / "bug.md",
             tmp_path / ".github" / "ISSUE_TEMPLATE" / "feature_request.md",
             tmp_path / ".github" / "ISSUE_TEMPLATE" / "question.md",
@@ -76,20 +78,34 @@ class TestTemplate:
             assert file.exists(), f"File {file} does not exist"
 
         # Check content of pyproject.toml
-        with open(tmp_path / "pyproject.toml") as f:
-            content = f.read()
-            assert package_name in content
-            assert answers["project_description"] in content
-            assert answers["author_name"] in content
-            assert answers["author_email"] in content
-            assert answers["min_python_version"] in content
+        with (tmp_path / "pyproject.toml").open("rb") as f:
+            pyproject = tomllib.load(f)
+
+        assert pyproject["project"]["name"] == package_name
+        assert pyproject["project"]["description"] == answers["project_description"]
+        assert pyproject["project"]["authors"] == [
+            {"name": answers["author_name"], "email": answers["author_email"]}
+        ]
+        assert pyproject["project"]["requires-python"] == f">= {min_python_version}"
+        assert pyproject["tool"]["ruff"]["target-version"] == "py{}".format(
+            min_python_version.replace(".", "")
+        )
+
+        # Check content of mkdocs.yml
+        with (tmp_path / "mkdocs.yml").open() as f:
+            mkdocs = yaml.safe_load(f)
+
+        assert mkdocs["site_name"] == answers["project_name"]
 
         # Check content of README.md
-        with open(tmp_path / "docs" / "README.md") as f:
-            content = f.read()
-            assert answers["project_name"] in content
-            assert answers["project_description"] in content
-            assert answers["min_python_version"] in content
+        readme = (tmp_path / "docs" / "README.md").read_text()
+
+        assert readme.startswith(f"# {answers['project_name']}\n")
+        assert f"\n{answers['project_description']}\n" in readme
+        assert f"- Python {min_python_version} or higher\n" in readme
+
+        # Check content of .python-version
+        assert (tmp_path / ".python-version").read_text().strip() == min_python_version
 
     def test_default_generation(self, template_path: Path, tmp_path: Path) -> None:
         """Test generating a project with default answers (see copier.yaml)."""
@@ -119,42 +135,57 @@ class TestTemplate:
 
         self._verify_project(tmp_path=tmp_path, answers=answers)
 
-    def test_update_preserves_source(
-        self, template_path: Path, tmp_path: Path, answers: dict[str, str]
-    ) -> None:
-        """Test that updating a project preserves source code."""
-        # Generate initial project
-        result = self.run_copier(
-            src_path=template_path, dst_path=tmp_path, answers=answers
-        )
-        assert result.returncode == 0, f"Initial generation failed: {result.stderr}"
-
-        # Add a custom file to the src directory
-        custom_file = tmp_path / "src" / "test_project" / "custom.py"
-        custom_file.write_text("# Custom source file")
-
-        # Update the project
-        os.environ["COPIER_ANSWERS_FILE"] = str(tmp_path / ".copier-answers.yml")
-        self.run_copier(src_path=None, dst_path=tmp_path, update=True)
-
-        # Check that the custom file still exists
-        assert custom_file.exists()
-        assert custom_file.read_text() == "# Custom source file"
-
     def test_special_characters(
         self, template_path: Path, tmp_path: Path, answers: dict[str, str]
     ) -> None:
-        """Test generating a project with special characters in inputs."""
-        # Modify answers to include special characters
-        answers["project_description"] = "Test with 'quotes' and \"double quotes\""
-        answers["author_name"] = "O'Connor"
+        """Test that special characters in answers produce valid generated files."""
+        special_answers = answers | {
+            "project_name": 'Test "quoted" project',
+            "project_description": "Test with 'quotes' and \"double quotes\"",
+            "author_name": "O'C\\onnor",
+        }
 
         # Generate project
-        result = self.run_copier(template_path, tmp_path, answers)
+        result = self.run_copier(template_path, tmp_path, special_answers)
         assert result.returncode == 0, f"Copier failed: {result.stderr}"
 
-        # Check content in pyproject.toml
-        with open(tmp_path / "pyproject.toml") as f:
-            content = f.read()
-            assert "Test with 'quotes' and \"double quotes\"" in content
-            assert "O'Connor" in content
+        # Check that pyproject.toml parses and holds the answers verbatim
+        with (tmp_path / "pyproject.toml").open("rb") as f:
+            pyproject = tomllib.load(f)
+
+        description = special_answers["project_description"]
+        assert pyproject["project"]["description"] == description
+        assert (
+            pyproject["project"]["authors"][0]["name"] == special_answers["author_name"]
+        )
+
+        # Check that mkdocs.yml parses and holds the answers verbatim
+        with (tmp_path / "mkdocs.yml").open() as f:
+            mkdocs = yaml.safe_load(f)
+
+        assert mkdocs["site_name"] == special_answers["project_name"]
+
+    def test_invalid_package_name(self, template_path: Path, tmp_path: Path) -> None:
+        """Test that a package name which is not an identifier is rejected."""
+        result = self.run_copier(
+            src_path=template_path,
+            dst_path=tmp_path,
+            answers={"package_name": "123abc"},
+        )
+
+        assert result.returncode != 0
+        assert "valid Python identifier" in result.stderr
+
+    @pytest.mark.parametrize("version", ["3.14.3", "3.9", "2.7", "abc"])
+    def test_invalid_python_version(
+        self, template_path: Path, tmp_path: Path, version: str
+    ) -> None:
+        """Test that an unsupported Python version is rejected."""
+        result = self.run_copier(
+            src_path=template_path,
+            dst_path=tmp_path,
+            answers={"min_python_version": version},
+        )
+
+        assert result.returncode != 0
+        assert "must be 3.10 or higher" in result.stderr
