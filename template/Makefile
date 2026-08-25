@@ -39,8 +39,9 @@ typecheck: check-uv ## Run type checking with ty
 	uv run -- ty check
 
 .PHONY: test
+# Exit code 5 means no test was collected, which is not a failure on a new project
 test: check-uv tests ## Run tests with coverage
-	uv run -- pytest
+	uv run -- pytest || [ $$? -eq 5 ]
 
 .PHONY: diff-cover
 diff-cover: check-uv test coverage.xml ## Show code coverage for recent changes
