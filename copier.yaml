@@ -39,7 +39,7 @@ min_python_version:
   default: "3.14"
   validator: >-
     {% set version = min_python_version.split('.') %}
-    {% set valid = version | length == 2 and version[0] == '3' and version[1].isdigit() and version[1] | int >= 10 %}
+    {% set valid = version | length == 2 and version[0] == '3' and version[1].isdigit() and version[1] | int >= 11 %}
     {% if not valid %}
-      The Python version must be 3.10 or higher, written as major.minor
+      The Python version must be 3.11 or higher, written as major.minor
     {% endif %}

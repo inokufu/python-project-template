@@ -10,6 +10,46 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2026-10-30
+
+### Upgrade notes
+
+`copier update` from 2.x brings five breaking changes:
+
+- `make test` and `make diff-cover` refuse a coverage below 90 %. Raise the coverage,
+  or lower `--cov-fail-under` in the `Makefile` and `fail_under` in
+  `[tool.diff_cover]`.
+- CI only runs for `main`. Add any other branch back to `on:` in `ci.yml`.
+- `make docs-deploy` is gone. Run `uv run mkdocs gh-deploy` instead.
+- `make diff-cover` no longer runs the tests: run `make test` first.
+- `min_python_version` must be 3.11 or higher: 3.10 reached its end of life, and
+  current dev tools no longer support it. A project generated for 3.10 updates with
+  `copier update -d min_python_version=3.11`.
+
+### Added
+
+- Dependabot configuration for uv, GitHub Actions and pre-commit hooks, with a
+  cooldown on fresh releases
+- gitleaks pre-commit hook, skipped in CI where the index is empty
+- A 90 % coverage floor on `make test`, and on the changed lines with `make diff-cover`
+
+### Changed
+
+- `make check` also runs `diff-cover`, which reads the last `make test` instead of
+  running the tests again, and is skipped until `origin/main` exists
+- CI: actions pinned by commit SHA, `diff-cover` replaces the coverage artifact, the
+  test job no longer waits for lint, and only `main` triggers it
+- `add-bounds` is `major`, and the dev dependencies use major bounds
+- Coverage report lists the missing lines (`term-missing`)
+- Tests may hold dummy secrets (`S105`, `S106` ignored)
+- The template's own CI, hooks and dependencies follow the same rules, with its own
+  Dependabot
+
+### Removed
+
+- `.github/zizmor.yml`, no longer needed with SHA-pinned actions
+- The `docs-deploy` target
+
 ## [2.4.0] - 2026-08-25
 
 ### Added
