@@ -39,22 +39,29 @@ typecheck: check-uv ## Run type checking with ty
 	uv run -- ty check
 
 .PHONY: test
+# Floor here: in pyproject it would fail a partial run
 # Exit code 5 means no test was collected, which is not a failure on a new project
 test: check-uv tests ## Run tests with coverage
-	uv run -- pytest || [ $$? -eq 5 ]
+	uv run -- pytest --cov-fail-under=90 || [ $$? -eq 5 ]
 
 .PHONY: diff-cover
-diff-cover: check-uv test coverage.xml ## Show code coverage for recent changes
-	uv run -- diff-cover coverage.xml
+# Skipped until origin/main exists, as on a project not pushed yet
+diff-cover: check-uv coverage.xml ## Show coverage of recent changes (reads the last make test)
+	@if git rev-parse --verify -q origin/main >/dev/null; then \
+		uv run -- diff-cover coverage.xml -c pyproject.toml; \
+	else \
+		echo "No origin/main: nothing to compare"; \
+	fi
 
 .PHONY: precommit
 precommit: check-uv install ## Run prek on all files
 	uv run -- prek run --all-files
 
 .PHONY: check
-check: check-uv install ## Run all checks (precommit + test)
-	make precommit
-	make test
+check: check-uv install ## Run all checks (precommit + test + diff-cover)
+	$(MAKE) precommit
+	$(MAKE) test
+	$(MAKE) diff-cover
 
 .PHONY: build
 build: check-uv install ## Build package
@@ -68,17 +75,13 @@ docs: check-uv install ## Build documentation
 docs-serve: check-uv install ## Serve documentation locally
 	uv run -- mkdocs serve
 
-.PHONY: docs-deploy
-docs-deploy: check-uv install ## Deploy documentation to GitHub Pages
-	uv run -- mkdocs gh-deploy
-
 .PHONY: gitignore
 gitignore: ## Generate .gitignore file for this project
 	curl -L https://www.gitignore.io/api/windows,macos,linux,git,pycharm,visualstudiocode,python > .gitignore
 
 .PHONY: clean
 clean: ## Remove temporary files and build artifacts
-	rm -rf .pytest_cache/ .coverage htmlcov/ .ruff_cache/
+	rm -rf .pytest_cache/ .coverage coverage.xml htmlcov/ .ruff_cache/
 	find . -type d -name __pycache__ -exec rm -rf {} +
 	find . -type f -name "*.pyc" -delete
 	find . -type d -name "*.egg-info" -exec rm -rf {} +

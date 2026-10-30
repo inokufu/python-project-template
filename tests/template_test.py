@@ -1,9 +1,12 @@
+import shutil
 import subprocess
 import tomllib
 from pathlib import Path
 
 import pytest
 import yaml
+
+MIN_PYTHON_VERSION = "3.11"
 
 
 class TestTemplate:
@@ -63,7 +66,7 @@ class TestTemplate:
             tmp_path / "src" / package_name / "__init__.py",
             tmp_path / "src" / package_name / "__main__.py",
             tmp_path / "tests" / "conftest.py",
-            tmp_path / ".github" / "zizmor.yml",
+            tmp_path / ".github" / "dependabot.yml",
             tmp_path / ".github" / "ISSUE_TEMPLATE" / "bug.md",
             tmp_path / ".github" / "ISSUE_TEMPLATE" / "feature_request.md",
             tmp_path / ".github" / "ISSUE_TEMPLATE" / "question.md",
@@ -176,7 +179,24 @@ class TestTemplate:
         assert result.returncode != 0
         assert "valid Python identifier" in result.stderr
 
-    @pytest.mark.parametrize("version", ["3.14.3", "3.9", "2.7", "abc"])
+    @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
+    def test_minimum_python_version_locks(
+        self, template_path: Path, tmp_path: Path
+    ) -> None:
+        """Test that a project on the lowest accepted Python resolves its dependencies."""
+        result = self.run_copier(
+            src_path=template_path,
+            dst_path=tmp_path,
+            answers={"min_python_version": MIN_PYTHON_VERSION},
+        )
+        assert result.returncode == 0, result.stderr
+
+        lock = subprocess.run(
+            ["uv", "lock"], cwd=tmp_path, capture_output=True, text=True, check=False
+        )
+        assert lock.returncode == 0, lock.stderr
+
+    @pytest.mark.parametrize("version", ["3.14.3", "3.10", "2.7", "abc"])
     def test_invalid_python_version(
         self, template_path: Path, tmp_path: Path, version: str
     ) -> None:
@@ -188,4 +208,4 @@ class TestTemplate:
         )
 
         assert result.returncode != 0
-        assert "must be 3.10 or higher" in result.stderr
+        assert f"must be {MIN_PYTHON_VERSION} or higher" in result.stderr

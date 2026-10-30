@@ -8,6 +8,13 @@
 [![EditorConfig](https://img.shields.io/badge/EditorConfig-333333?logo=editorconfig)](https://editorconfig.org/)
 [![Prek](https://img.shields.io/badge/prek-F54327?logo=prek)](https://prek.j178.dev/)
 [![Makefile](https://img.shields.io/badge/Makefile-427819?logo=gnu)](https://www.gnu.org/software/make/manual/make.html)
+[![Ruff](https://img.shields.io/badge/Ruff-3A3A3A?logo=ruff)](https://docs.astral.sh/ruff/)
+[![Pytest](https://img.shields.io/badge/pytest-E6F7FF?logo=pytest)](https://docs.pytest.org/)
+[![MkDocs](https://img.shields.io/badge/MkDocs-526CFE?logo=markdown)](https://www.mkdocs.org/)
+[![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-E6F0FF?logo=githubactions)](https://github.com/features/actions)
+[![Dependabot](https://img.shields.io/badge/Dependabot-025E8C?logo=dependabot)](https://docs.github.com/code-security/dependabot)
+[![gitleaks](https://img.shields.io/badge/gitleaks-C0392B)](https://github.com/gitleaks/gitleaks)
+[![zizmor](https://img.shields.io/badge/zizmor-6E40C9)](https://docs.zizmor.sh/)
 
 A modern Copier template for creating standardized Python packages and
 applications with best practices.
@@ -20,7 +27,10 @@ applications with best practices.
   packages
 - 💅 **Code quality** with prek(pre-commit), well configured Ruff (formatter & linter) and Ty (type checker)
 - 🔒 **Dependency security** with [`uv audit`](https://docs.astral.sh/uv/) run as a pre-commit hook to catch known vulnerabilities
-- 🧪 **Testing** setup with pytest and coverage reports
+- 🛡️ **Workflow security** with [zizmor](https://docs.zizmor.sh/) run as a pre-commit hook to audit GitHub Actions workflows
+- 🔑 **Secret scanning** with [gitleaks](https://github.com/gitleaks/gitleaks) run as a pre-commit hook, to catch a secret before it is committed
+- 🤖 **Dependency updates** with Dependabot for uv, GitHub Actions and pre-commit hooks
+- 🧪 **Testing** setup with pytest, a coverage floor (90 % by default) and [diff-cover](https://github.com/Bachmann1234/diff_cover) on the changed lines
 - 📝 **Documentation** with MkDocs and Material theme, including well-structured
   README and CHANGELOG
 - 🚀 **CI/CD** with GitHub Actions
@@ -29,8 +39,7 @@ applications with best practices.
 - 🔧 **Development standards** with EditorConfig for consistent code style across
   editors
 - 🚫 **Comprehensive .gitignore** tailored for Python development
-- 🧩 **Multiple license options** (GPL-3.0, MIT, Apache-2.0, BSD-3-Clause,
-  Proprietary)
+- 🧩 **License** GPL-3.0, to replace by hand if needed
 - 🤝 **Project governance** with CODE_OF_CONDUCT, CONTRIBUTING, and SECURITY
   policies
 - 🔄 **Easy updates** - keep your project in sync with template improvements
@@ -81,6 +90,10 @@ copier update
 
 This will update your project files while preserving your source code and tests.
 
+Dependabot keeps the template repository itself up to date, not the versions it ships:
+it cannot read the `.jinja` files under `template/`. Those are bumped by hand at each
+release.
+
 ## 📋 Template Variables
 
 | Feature               | Description                                                       | Default               |
@@ -90,7 +103,7 @@ This will update your project files while preserving your source code and tests.
 | `project_description` | Brief summary of your project (used in README and pyproject.toml) | "A Python project"    |
 | `author_name`         | Name of the author or organization (for credits and licensing)    |                       |
 | `author_email`        | Contact email (for documentation and package metadata)            |                       |
-| `min_python_version`  | Minimum Python version required (3.10 or higher, as major.minor)  | 3.14                  |
+| `min_python_version`  | Minimum Python version required (3.11 or higher, as major.minor)  | 3.14                  |
 
 ## 🧑‍💻 Development
 
@@ -100,23 +113,20 @@ This will update your project files while preserving your source code and tests.
 # Install dependencies
 make install
 
-# Format code
-make format
-
-# Lint code
-make lint
+# Initialize the template repository (first installation)
+make init
 
 # Run tests
 make test
+
+# Run pre-commit hooks on all files
+make precommit
 
 # Run all checks (pre-commit, tests)
 make check
 
 # Build package
 make build
-
-# Generate documentation
-make docs
 ```
 
 ## 🤝 Contributing

@@ -32,13 +32,13 @@ test: check-uv tests ## Run tests with coverage
 	uv run -- pytest
 
 .PHONY: precommit
-precommit: check-uv install ## Run pre-commit on all files
+precommit: check-uv install ## Run prek on all files
 	uv run -- prek run --all-files
 
 .PHONY: check
 check: check-uv install ## Run all checks (precommit + test)
-	make precommit
-	make test
+	$(MAKE) precommit
+	$(MAKE) test
 
 .PHONY: build
 build: check-uv install ## Build package

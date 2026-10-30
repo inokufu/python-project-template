@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, master, develop]
+    branches: [main]
   pull_request:
-    branches: [main, master, develop]
+    branches: [main]
   workflow_dispatch:
 # Uncomment to activate regular checks:
 #  schedule:
@@ -19,13 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Install uv
         id: setup-uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
         with:
           enable-cache: true
 
@@ -36,30 +36,33 @@ jobs:
         run: make install
 
       - name: Cache prek
-        uses: actions/cache@v4
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.cache/prek
           key: prek-{% raw %}${{ hashFiles('.pre-commit-config.yaml') }}{% endraw %}
+          restore-keys: prek-
 
       - name: Run prek checks
         run: make precommit
+        env:
+          SKIP: gitleaks
 
       - name: Lint GitHub Actions
-        uses: eifinger/actionlint-action@v1
+        uses: eifinger/actionlint-action@1fc89649be682d16ec5cf65ea16e269eb88d3982 # v1.10.2
 
   test:
     name: Test Python
-    needs: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          fetch-depth: 0
 
       - name: Install uv
         id: setup-uv
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
         with:
           enable-cache: true
 
@@ -69,11 +72,5 @@ jobs:
       - name: Run tests with coverage
         run: make test
 
-      - name: Upload coverage report as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          retention-days: 7
-          path: |
-            htmlcov/
-            coverage.xml
+      - name: Check coverage of the changed lines
+        run: make diff-cover

@@ -114,19 +114,25 @@ This project includes a Makefile with useful commands for development:
 make help
 ```
 
-| Command     | Description                             |
-|-------------|-----------------------------------------|
-| install     | Synchronize dependencies                |
-| init        | Initialize project (first installation) |
-| format      | Format code                             |
-| lint        | Run linting checks                      |
-| test        | Run tests with coverage                 |
-| precommit   | Run prek on all files                   |
-| check       | Run all checks (precommit + test)       |
-| build       | Build package                           | 
-| docs        | Build documentation                     |
-| docs-serve  | Serve documentation locally             |
-| docs-deploy | Deploy documentation to GitHub Pages    |
+| Command    | Description                                                     |
+|------------|-----------------------------------------------------------------|
+| install    | Synchronize dependencies                                        |
+| init       | Initialize project (first installation)                         |
+| format     | Format code                                                     |
+| lint       | Run linting checks                                              |
+| typecheck  | Run type checking with ty                                       |
+| test       | Run tests with coverage, refused below the coverage floor       |
+| diff-cover | Coverage of the changed lines, refused below the coverage floor |
+| precommit  | Run prek on all files                                           |
+| check      | Run all checks (precommit + test + diff-cover)                  |
+| build      | Build package                                                   |
+| docs       | Build documentation                                             |
+| docs-serve | Serve documentation locally                                     |
+
+`diff-cover` compares the current branch with `origin/main`, and reads the coverage
+report of the last `make test`. It is skipped until `origin/main` exists.
+The coverage floor is set by `--cov-fail-under` in the `Makefile` and by `fail_under` in
+`[tool.diff_cover]` of `pyproject.toml`.
 
 ## Style Guidelines
 
@@ -155,6 +161,9 @@ When adding or changing features, please update the documentation accordingly:
 - All new features should include tests
 - Bug fixes should include tests that demonstrate the issue is fixed
 - Run the full test suite before submitting a PR
+- Use obviously fake secrets in tests, such as `"test-api-key"`: gitleaks refuses a
+  value that looks like a real one. Mark a line `# gitleaks:allow` only when a test
+  needs a realistic format.
 
 ## Review Process
 
