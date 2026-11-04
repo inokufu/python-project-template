@@ -110,6 +110,14 @@ class TestTemplate:
         # Check content of .python-version
         assert (tmp_path / ".python-version").read_text().strip() == min_python_version
 
+        # Check that CI runs on the default branch
+        with (tmp_path / ".github" / "workflows" / "ci.yml").open() as f:
+            ci = yaml.safe_load(f)
+
+        # YAML 1.1 reads the "on" key as True
+        for event in ("push", "pull_request"):
+            assert ci[True][event]["branches"] == [answers["default_branch"]]
+
     def test_default_generation(self, template_path: Path, tmp_path: Path) -> None:
         """Test generating a project with default answers (see copier.yaml)."""
         result = self.run_copier(
@@ -124,6 +132,7 @@ class TestTemplate:
             "author_name": "Inokufu",
             "author_email": "contact@inokufu.com",
             "min_python_version": "3.14",
+            "default_branch": "main",
         }
         self._verify_project(tmp_path=tmp_path, answers=default_answers)
 
@@ -209,3 +218,17 @@ class TestTemplate:
 
         assert result.returncode != 0
         assert f"must be {MIN_PYTHON_VERSION} or higher" in result.stderr
+
+    @pytest.mark.parametrize("branch", ["", "my branch"])
+    def test_invalid_default_branch(
+        self, template_path: Path, tmp_path: Path, branch: str
+    ) -> None:
+        """Test that a branch name with spaces, or no name at all, is rejected."""
+        result = self.run_copier(
+            src_path=template_path,
+            dst_path=tmp_path,
+            answers={"default_branch": branch},
+        )
+
+        assert result.returncode != 0
+        assert "single word without spaces" in result.stderr

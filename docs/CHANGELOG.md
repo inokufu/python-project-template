@@ -14,41 +14,37 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Upgrade notes
 
-`copier update` from 2.x brings five breaking changes:
-
-- `make test` and `make diff-cover` refuse a coverage below 90 %. Raise the coverage,
-  or lower `--cov-fail-under` in the `Makefile` and `fail_under` in
-  `[tool.diff_cover]`.
-- CI only runs for `main`. Add any other branch back to `on:` in `ci.yml`.
-- `make docs-deploy` is gone. Run `uv run mkdocs gh-deploy` instead.
-- `make diff-cover` no longer runs the tests: run `make test` first.
-- `min_python_version` must be 3.11 or higher: 3.10 reached its end of life, and
-  current dev tools no longer support it. A project generated for 3.10 updates with
-  `copier update -d min_python_version=3.11`.
+- Coverage below 90 % fails `make test` and `make diff-cover`: lower `COV_MIN` in the
+  `Makefile` if needed
+- CI only runs on `default_branch` (`main`): on `master`, update with
+  `copier update -d default_branch=master`
+- `make diff-cover` no longer runs the tests: run `make test` first
+- `make docs-deploy` is gone: run `uv run mkdocs gh-deploy`
+- Python 3.11 minimum: update with `copier update -d min_python_version=3.11`
 
 ### Added
 
-- Dependabot configuration for uv, GitHub Actions and pre-commit hooks, with a
-  cooldown on fresh releases
-- gitleaks pre-commit hook, skipped in CI where the index is empty
-- A 90 % coverage floor on `make test`, and on the changed lines with `make diff-cover`
+- Dependabot for uv, GitHub Actions and pre-commit hooks, with a cooldown
+- gitleaks pre-commit hook
+- 90 % coverage floor (`COV_MIN`) on `make test` and `make diff-cover`
+- `default_branch` question
 
 ### Changed
 
-- `make check` also runs `diff-cover`, which reads the last `make test` instead of
-  running the tests again, and is skipped until `origin/main` exists
-- CI: actions pinned by commit SHA, `diff-cover` replaces the coverage artifact, the
-  test job no longer waits for lint, and only `main` triggers it
-- `add-bounds` is `major`, and the dev dependencies use major bounds
-- Coverage report lists the missing lines (`term-missing`)
-- Tests may hold dummy secrets (`S105`, `S106` ignored)
-- The template's own CI, hooks and dependencies follow the same rules, with its own
-  Dependabot
+- `make check` also runs `diff-cover`, on the last `make test`
+- `make install` also installs the git hooks
+- CI: actions pinned by SHA, `diff-cover` replaces the coverage artifact, lint and test
+  run in parallel
+- Dev dependencies use major bounds (`add-bounds = "major"`)
+- Coverage report lists the missing lines
+- `S105` and `S106` ignored in tests
+- The template repository follows the same rules
 
 ### Removed
 
-- `.github/zizmor.yml`, no longer needed with SHA-pinned actions
-- The `docs-deploy` target
+- `.github/zizmor.yml`, useless with SHA-pinned actions
+- `make docs-deploy`
+- The hardcoded Python version in `CONTRIBUTING.md`
 
 ## [2.4.0] - 2026-08-25
 

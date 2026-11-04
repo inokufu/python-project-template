@@ -74,13 +74,23 @@ class TestCommands:
         assert (generated_project / "coverage.xml").is_file()
 
     @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
-    def test_make_diff_cover_without_remote(self, generated_project: Path) -> None:
-        """Test that 'make diff-cover' skips when there is no origin/main to compare."""
+    def test_make_diff_cover_without_report(self, generated_project: Path) -> None:
+        """Test that 'make diff-cover' asks for 'make test' when coverage.xml is missing."""
+        (generated_project / "coverage.xml").unlink(missing_ok=True)
+        result = self.run_make_command(generated_project, "diff-cover", 2)
+
+        assert "run make test first" in result.stdout
+
+    @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
+    def test_make_diff_cover_without_remote(
+        self, generated_project: Path, answers: dict[str, str]
+    ) -> None:
+        """Test that 'make diff-cover' skips when the default branch is not on origin."""
         # Only its existence is checked when there is nothing to compare
         (generated_project / "coverage.xml").touch()
         result = self.run_make_command(generated_project, "diff-cover")
 
-        assert "No origin/main" in result.stdout
+        assert f"No origin/{answers['default_branch']}" in result.stdout
 
     @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
     def test_make_build(self, generated_project: Path) -> None:

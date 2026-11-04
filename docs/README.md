@@ -104,6 +104,7 @@ release.
 | `author_name`         | Name of the author or organization (for credits and licensing)    |                       |
 | `author_email`        | Contact email (for documentation and package metadata)            |                       |
 | `min_python_version`  | Minimum Python version required (3.11 or higher, as major.minor)  | 3.14                  |
+| `default_branch`      | Default git branch, checked by CI and `make diff-cover`           | main                  |
 
 ## 🧑‍💻 Development
 

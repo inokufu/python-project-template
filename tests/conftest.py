@@ -22,6 +22,7 @@ def answers() -> dict[str, str]:
         "author_name": "Test Author",
         "author_email": "test@example.com",
         "min_python_version": "3.13",
+        "default_branch": "master",
     }
 
 

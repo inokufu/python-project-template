@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [{{ default_branch }}]
   pull_request:
-    branches: [main]
+    branches: [{{ default_branch }}]
   workflow_dispatch:
 # Uncomment to activate regular checks:
 #  schedule:
