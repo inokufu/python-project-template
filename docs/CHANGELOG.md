@@ -10,6 +10,43 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2026-10-30
+
+### Upgrade notes
+
+- Coverage below 90 % fails `make test` and `make diff-cover`: lower `COV_MIN` in the
+  `Makefile` if needed
+- CI only runs on `default_branch` (`main`), no longer on `master` or `develop`: on
+  `master`, update with `copier update -d default_branch=master`
+- `make diff-cover` no longer runs the tests: run `make test` first
+- `make docs-deploy` is gone: run `uv run mkdocs gh-deploy`
+- Python 3.11 minimum: a 3.10 project updates with
+  `copier update -d min_python_version=3.11`, or `--defaults` silently moves it to 3.14
+
+### Added
+
+- Dependabot for uv, GitHub Actions and pre-commit hooks, with a cooldown
+- gitleaks pre-commit hook
+- 90 % coverage floor (`COV_MIN`) on `make test` and `make diff-cover`
+- `default_branch` question
+
+### Changed
+
+- `make check` also runs `diff-cover`, on the last `make test`
+- `make install` also installs the git hooks
+- CI: actions pinned by SHA, `diff-cover` replaces the coverage artifact, lint and test
+  run in parallel
+- Dev dependencies use major bounds (`add-bounds = "major"`)
+- Coverage report lists the missing lines
+- `S105` and `S106` ignored in tests
+- The template repository follows the same rules
+
+### Removed
+
+- `.github/zizmor.yml`, useless with SHA-pinned actions
+- `make docs-deploy`
+- The hardcoded Python version in `CONTRIBUTING.md`
+
 ## [2.4.0] - 2026-08-25
 
 ### Added

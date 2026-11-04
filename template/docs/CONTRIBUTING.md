@@ -20,7 +20,6 @@ the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ### Prerequisites
 
-- Python 3.13 or higher
 - [uv](https://docs.astral.sh/uv/) for dependency management
 - Git for version control
 
@@ -114,19 +113,22 @@ This project includes a Makefile with useful commands for development:
 make help
 ```
 
-| Command     | Description                             |
-|-------------|-----------------------------------------|
-| install     | Synchronize dependencies                |
-| init        | Initialize project (first installation) |
-| format      | Format code                             |
-| lint        | Run linting checks                      |
-| test        | Run tests with coverage                 |
-| precommit   | Run prek on all files                   |
-| check       | Run all checks (precommit + test)       |
-| build       | Build package                           | 
-| docs        | Build documentation                     |
-| docs-serve  | Serve documentation locally             |
-| docs-deploy | Deploy documentation to GitHub Pages    |
+| Command    | Description                                                |
+|------------|------------------------------------------------------------|
+| install    | Synchronize dependencies and install the git hooks         |
+| init       | Initialize project (first installation)                    |
+| format     | Format code                                                |
+| lint       | Run linting checks                                         |
+| typecheck  | Run type checking with ty                                  |
+| test       | Run tests with coverage                                    |
+| diff-cover | Show coverage of recent changes (reads the last make test) |
+| precommit  | Run prek on all files                                      |
+| check      | Run all checks (precommit + test + diff-cover)             |
+| build      | Build package                                              |
+| docs       | Build documentation                                        |
+| docs-serve | Serve documentation locally                                |
+
+`make test` and `make diff-cover` fail below `COV_MIN` (90), e.g. `make check COV_MIN=80`.
 
 ## Style Guidelines
 
@@ -155,6 +157,7 @@ When adding or changing features, please update the documentation accordingly:
 - All new features should include tests
 - Bug fixes should include tests that demonstrate the issue is fixed
 - Run the full test suite before submitting a PR
+- Use obviously fake secrets in tests (`"test-api-key"`), or gitleaks blocks the commit
 
 ## Review Process
 

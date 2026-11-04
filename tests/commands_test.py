@@ -8,45 +8,6 @@ import pytest
 class TestCommands:
     """Tests for the commands in generated projects."""
 
-    @pytest.fixture(scope="session")
-    def generated_project(
-        self,
-        tmp_path_factory: pytest.TempPathFactory,
-        template_path: Path,
-        answers: dict[str, str],
-    ) -> Path:
-        """Generate a project once and reuse it for multiple tests.
-
-        Args:
-            tmp_path_factory: Pytest factory for temporary directories
-            template_path: Path to the template
-            answers: Default answers for template questions
-
-        Returns:
-            Path to the generated project
-        """
-        project_dir = tmp_path_factory.mktemp("project")
-
-        # Run copier to generate a project
-        cmd = [
-            "copier",
-            "copy",
-            "--trust",
-            "--force",
-            str(template_path),
-            str(project_dir),
-        ]
-        for key, value in answers.items():
-            cmd.extend(["-d", f"{key}={value}"])
-
-        result = subprocess.run(cmd, capture_output=True, text=True, check=False)
-        assert result.returncode == 0, f"Copier failed: {result.stderr}"
-
-        # Track files: prek only checks what git knows about
-        subprocess.run(["git", "init"], cwd=project_dir, check=True)
-        subprocess.run(["git", "add", "--all"], cwd=project_dir, check=True)
-        return project_dir
-
     @staticmethod
     def run_make_command(
         project_dir: Path, command: str, expected_returncode: int = 0
@@ -91,18 +52,18 @@ class TestCommands:
 
         assert (generated_project / ".venv").is_dir()
         assert (generated_project / "uv.lock").is_file()
+        assert (generated_project / ".git" / "hooks" / "pre-commit").is_file()
 
     @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
     def test_make_init(self, generated_project: Path) -> None:
         """Test that 'make init' works."""
         self.run_make_command(generated_project, "init")
 
-        assert (generated_project / ".git" / "hooks" / "pre-commit").is_file()
+        assert (generated_project / ".env").is_file()
 
     @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
     def test_make_precommit(self, generated_project: Path) -> None:
-        """Test that 'make precommit' works after initialization."""
-        self.run_make_command(generated_project, "init")
+        """Test that 'make precommit' works."""
         self.run_make_command(generated_project, "precommit")
 
     @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
@@ -111,6 +72,25 @@ class TestCommands:
         self.run_make_command(generated_project, "test")
 
         assert (generated_project / "coverage.xml").is_file()
+
+    @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
+    def test_make_diff_cover_without_report(self, generated_project: Path) -> None:
+        """Test that 'make diff-cover' asks for 'make test' when coverage.xml is missing."""
+        (generated_project / "coverage.xml").unlink(missing_ok=True)
+        result = self.run_make_command(generated_project, "diff-cover", 2)
+
+        assert "run make test first" in result.stdout
+
+    @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
+    def test_make_diff_cover_without_remote(
+        self, generated_project: Path, answers: dict[str, str]
+    ) -> None:
+        """Test that 'make diff-cover' skips when the default branch is not on origin."""
+        # Only its existence is checked when there is nothing to compare
+        (generated_project / "coverage.xml").touch()
+        result = self.run_make_command(generated_project, "diff-cover")
+
+        assert f"No origin/{answers['default_branch']}" in result.stdout
 
     @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
     def test_make_build(self, generated_project: Path) -> None:

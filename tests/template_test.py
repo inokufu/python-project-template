@@ -1,9 +1,12 @@
+import shutil
 import subprocess
 import tomllib
 from pathlib import Path
 
 import pytest
 import yaml
+
+MIN_PYTHON_VERSION = "3.11"
 
 
 class TestTemplate:
@@ -63,7 +66,7 @@ class TestTemplate:
             tmp_path / "src" / package_name / "__init__.py",
             tmp_path / "src" / package_name / "__main__.py",
             tmp_path / "tests" / "conftest.py",
-            tmp_path / ".github" / "zizmor.yml",
+            tmp_path / ".github" / "dependabot.yml",
             tmp_path / ".github" / "ISSUE_TEMPLATE" / "bug.md",
             tmp_path / ".github" / "ISSUE_TEMPLATE" / "feature_request.md",
             tmp_path / ".github" / "ISSUE_TEMPLATE" / "question.md",
@@ -107,6 +110,17 @@ class TestTemplate:
         # Check content of .python-version
         assert (tmp_path / ".python-version").read_text().strip() == min_python_version
 
+        # Check that CI and diff-cover use the default branch
+        with (tmp_path / ".github" / "workflows" / "ci.yml").open() as f:
+            ci = yaml.safe_load(f)
+
+        # YAML 1.1 reads the "on" key as True
+        for event in ("push", "pull_request"):
+            assert ci[True][event]["branches"] == [answers["default_branch"]]
+
+        makefile = (tmp_path / "Makefile").read_text()
+        assert f"COMPARE_BRANCH ?= origin/{answers['default_branch']}\n" in makefile
+
     def test_default_generation(self, template_path: Path, tmp_path: Path) -> None:
         """Test generating a project with default answers (see copier.yaml)."""
         result = self.run_copier(
@@ -121,6 +135,7 @@ class TestTemplate:
             "author_name": "Inokufu",
             "author_email": "contact@inokufu.com",
             "min_python_version": "3.14",
+            "default_branch": "main",
         }
         self._verify_project(tmp_path=tmp_path, answers=default_answers)
 
@@ -176,7 +191,24 @@ class TestTemplate:
         assert result.returncode != 0
         assert "valid Python identifier" in result.stderr
 
-    @pytest.mark.parametrize("version", ["3.14.3", "3.9", "2.7", "abc"])
+    @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
+    def test_minimum_python_version_locks(
+        self, template_path: Path, tmp_path: Path
+    ) -> None:
+        """Test that a project on the lowest accepted Python resolves its dependencies."""
+        result = self.run_copier(
+            src_path=template_path,
+            dst_path=tmp_path,
+            answers={"min_python_version": MIN_PYTHON_VERSION},
+        )
+        assert result.returncode == 0, result.stderr
+
+        lock = subprocess.run(
+            ["uv", "lock"], cwd=tmp_path, capture_output=True, text=True, check=False
+        )
+        assert lock.returncode == 0, lock.stderr
+
+    @pytest.mark.parametrize("version", ["3.14.3", "3.10", "2.7", "abc"])
     def test_invalid_python_version(
         self, template_path: Path, tmp_path: Path, version: str
     ) -> None:
@@ -188,4 +220,14 @@ class TestTemplate:
         )
 
         assert result.returncode != 0
-        assert "must be 3.10 or higher" in result.stderr
+        assert f"must be {MIN_PYTHON_VERSION} or higher" in result.stderr
+
+    def test_nested_default_branch(
+        self, template_path: Path, tmp_path: Path, answers: dict[str, str]
+    ) -> None:
+        """Test that a branch name with a slash reaches CI and the Makefile."""
+        nested_answers = answers | {"default_branch": "release/1.0"}
+        result = self.run_copier(template_path, tmp_path, nested_answers)
+        assert result.returncode == 0, result.stderr
+
+        self._verify_project(tmp_path=tmp_path, answers=nested_answers)
