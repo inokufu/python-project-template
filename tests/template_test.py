@@ -110,13 +110,16 @@ class TestTemplate:
         # Check content of .python-version
         assert (tmp_path / ".python-version").read_text().strip() == min_python_version
 
-        # Check that CI runs on the default branch
+        # Check that CI and diff-cover use the default branch
         with (tmp_path / ".github" / "workflows" / "ci.yml").open() as f:
             ci = yaml.safe_load(f)
 
         # YAML 1.1 reads the "on" key as True
         for event in ("push", "pull_request"):
             assert ci[True][event]["branches"] == [answers["default_branch"]]
+
+        makefile = (tmp_path / "Makefile").read_text()
+        assert f"COMPARE_BRANCH ?= origin/{answers['default_branch']}\n" in makefile
 
     def test_default_generation(self, template_path: Path, tmp_path: Path) -> None:
         """Test generating a project with default answers (see copier.yaml)."""
@@ -219,16 +222,12 @@ class TestTemplate:
         assert result.returncode != 0
         assert f"must be {MIN_PYTHON_VERSION} or higher" in result.stderr
 
-    @pytest.mark.parametrize("branch", ["", "my branch"])
-    def test_invalid_default_branch(
-        self, template_path: Path, tmp_path: Path, branch: str
+    def test_nested_default_branch(
+        self, template_path: Path, tmp_path: Path, answers: dict[str, str]
     ) -> None:
-        """Test that a branch name with spaces, or no name at all, is rejected."""
-        result = self.run_copier(
-            src_path=template_path,
-            dst_path=tmp_path,
-            answers={"default_branch": branch},
-        )
+        """Test that a branch name with a slash reaches CI and the Makefile."""
+        nested_answers = answers | {"default_branch": "release/1.0"}
+        result = self.run_copier(template_path, tmp_path, nested_answers)
+        assert result.returncode == 0, result.stderr
 
-        assert result.returncode != 0
-        assert "single word without spaces" in result.stderr
+        self._verify_project(tmp_path=tmp_path, answers=nested_answers)

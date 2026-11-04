@@ -52,18 +52,18 @@ class TestCommands:
 
         assert (generated_project / ".venv").is_dir()
         assert (generated_project / "uv.lock").is_file()
+        assert (generated_project / ".git" / "hooks" / "pre-commit").is_file()
 
     @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
     def test_make_init(self, generated_project: Path) -> None:
         """Test that 'make init' works."""
         self.run_make_command(generated_project, "init")
 
-        assert (generated_project / ".git" / "hooks" / "pre-commit").is_file()
+        assert (generated_project / ".env").is_file()
 
     @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")
     def test_make_precommit(self, generated_project: Path) -> None:
-        """Test that 'make precommit' works after initialization."""
-        self.run_make_command(generated_project, "init")
+        """Test that 'make precommit' works."""
         self.run_make_command(generated_project, "precommit")
 
     @pytest.mark.skipif(not shutil.which("uv"), reason="uv not installed")

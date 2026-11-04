@@ -5,6 +5,8 @@ UV_COMMAND := $(shell command -v uv 2> /dev/null)
 
 # Coverage floor of make test and make diff-cover
 COV_MIN ?= 90
+
+# Branch that make diff-cover compares with
 COMPARE_BRANCH ?= origin/{{ default_branch }}
 
 .PHONY: help
@@ -12,7 +14,7 @@ help: ## Display this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: all
-all: check-uv install format lint check ## Build everything
+all: check-uv format check ## Build everything
 
 .PHONY: check-uv
 check-uv: ## Check if uv is installed
@@ -22,9 +24,11 @@ endif
 
 .PHONY: install
 # Hooks need a git repository, absent from a Docker build for instance
-install: check-uv pyproject.toml .pre-commit-config.yaml ## Synchronize dependencies and install the git hooks
+install: check-uv pyproject.toml ## Synchronize dependencies and install the git hooks
 	uv sync
-	@if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then uv run -- prek install; fi
+	@if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then echo "Not a git repository: git hooks not installed"; \
+	elif [ -n "$$(git config core.hooksPath)" ]; then echo "core.hooksPath is set: git hooks not installed"; \
+	else uv run -- prek install; fi
 
 .PHONY: init
 init: check-uv install ## Initialize project (first installation)
@@ -62,7 +66,7 @@ precommit: check-uv install ## Run prek on all files
 	uv run -- prek run --all-files
 
 .PHONY: check
-check: check-uv install ## Run all checks (precommit + test + diff-cover)
+check: check-uv ## Run all checks (precommit + test + diff-cover)
 	$(MAKE) precommit
 	$(MAKE) test
 	$(MAKE) diff-cover

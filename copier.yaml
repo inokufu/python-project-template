@@ -48,7 +48,3 @@ default_branch:
   type: str
   help: Default git branch, checked by CI and make diff-cover
   default: main
-  validator: >-
-    {% if default_branch.split() != [default_branch] %}
-      The branch name must be a single word without spaces
-    {% endif %}

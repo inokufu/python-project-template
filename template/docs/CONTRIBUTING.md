@@ -113,22 +113,22 @@ This project includes a Makefile with useful commands for development:
 make help
 ```
 
-| Command    | Description                                             |
-|------------|---------------------------------------------------------|
-| install    | Synchronize dependencies                                |
-| init       | Initialize project (first installation)                 |
-| format     | Format code                                             |
-| lint       | Run linting checks                                      |
-| typecheck  | Run type checking with ty                               |
-| test       | Run tests with coverage                                 |
-| diff-cover | Check coverage of the changed lines (after `make test`) |
-| precommit  | Run prek on all files                                   |
-| check      | Run all checks (precommit + test + diff-cover)          |
-| build      | Build package                                           |
-| docs       | Build documentation                                     |
-| docs-serve | Serve documentation locally                             |
+| Command    | Description                                                |
+|------------|------------------------------------------------------------|
+| install    | Synchronize dependencies and install the git hooks         |
+| init       | Initialize project (first installation)                    |
+| format     | Format code                                                |
+| lint       | Run linting checks                                         |
+| typecheck  | Run type checking with ty                                  |
+| test       | Run tests with coverage                                    |
+| diff-cover | Show coverage of recent changes (reads the last make test) |
+| precommit  | Run prek on all files                                      |
+| check      | Run all checks (precommit + test + diff-cover)             |
+| build      | Build package                                              |
+| docs       | Build documentation                                        |
+| docs-serve | Serve documentation locally                                |
 
-Both coverage checks fail below `COV_MIN` (90), e.g. `make check COV_MIN=80`.
+`make test` and `make diff-cover` fail below `COV_MIN` (90), e.g. `make check COV_MIN=80`.
 
 ## Style Guidelines
 

@@ -11,7 +11,7 @@ help: ## Display this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: all
-all: check-uv install format lint check ## Build everything
+all: check-uv check ## Run all checks (same as check)
 
 .PHONY: check-uv
 check-uv: ## Check if uv is installed
@@ -36,22 +36,16 @@ precommit: check-uv install ## Run prek on all files
 	uv run -- prek run --all-files
 
 .PHONY: check
-check: check-uv install ## Run all checks (precommit + test)
+check: check-uv ## Run all checks (precommit + test)
 	$(MAKE) precommit
 	$(MAKE) test
-
-.PHONY: build
-build: check-uv install ## Build package
-	uv build
 
 .PHONY: gitignore
 gitignore: ## Generate .gitignore file for this project
 	curl -L https://www.gitignore.io/api/windows,macos,linux,git,pycharm,visualstudiocode,python > .gitignore
 
 .PHONY: clean
-clean: ## Remove temporary files and build artifacts
+clean: ## Remove temporary files
 	rm -rf .pytest_cache/ .coverage htmlcov/ .ruff_cache/
 	find . -type d -name __pycache__ -exec rm -rf {} +
 	find . -type f -name "*.pyc" -delete
-	find . -type d -name "*.egg-info" -exec rm -rf {} +
-	rm -rf dist/ build/

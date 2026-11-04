@@ -125,9 +125,6 @@ make precommit
 
 # Run all checks (pre-commit, tests)
 make check
-
-# Build package
-make build
 ```
 
 ## 🤝 Contributing
